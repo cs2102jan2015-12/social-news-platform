@@ -1,3 +1,5 @@
+USE social_news_platform;
+
 CREATE TABLE User (
   uid INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
