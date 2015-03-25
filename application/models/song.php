@@ -1,6 +1,6 @@
 <?php
 
-class Model
+class Song
 {
     /**
      * @param object $db A PDO database connection
