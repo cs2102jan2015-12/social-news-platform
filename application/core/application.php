@@ -15,8 +15,10 @@ class Application
      * "Start" the application:
      * Analyze the URL elements and calls the according controller/method or the fallback
      */
-    public function __construct()
-    {
+    public function __construct() {
+        // Begins the user session for persistent login.
+        session_start();
+
         // create array with URL parts in $url
         $this->getUrlWithoutModRewrite();
 

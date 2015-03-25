@@ -30,6 +30,14 @@ class User
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
 
-        $query->execute($parameters);
+        if ($query->execute($parameters) > 0) { // If the query is successful...
+            $sql = "SELECT * FROM User WHERE username = :username";
+            $query = $this->db->prepare($sql);
+            $query->execute(array(':username' => $username)); // Execute query first, then...
+            $user = $query->fetch(PDO::FETCH_ASSOC); // Fetch the array of attributes of the user.
+            return $user; // Return the user.
+        }
+
+        return false; // If it hits here, return false to signify failure.
     }
 }

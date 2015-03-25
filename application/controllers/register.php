@@ -18,7 +18,14 @@ class RegisterController extends Controller
     {
         // if we have POST data
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-            echo var_dump($this->user);
+            $user = $this->user->addUser($_POST['username'], $_POST['password']);
+            if ($user) {
+                $_SESSION['user'] = $user;
+
+                // Ensure session is written before redirecting.
+                session_write_close();
+                header('location: ' . URL_WITH_INDEX_FILE . 'register/complete');
+            }
         }
 
         // load views
@@ -26,7 +33,13 @@ class RegisterController extends Controller
         require APP . 'views/register/index.php';
         require APP . 'views/_templates/footer.php';
     }
-
+    
+    public function complete() {
+        require APP . 'views/_templates/header.php';
+        require APP . 'views/register/complete.php';
+        require APP . 'views/_templates/footer.php';
+    }
+    
     /**
      * Overloaded loadModel() method. This method is called on __construct().
      */
