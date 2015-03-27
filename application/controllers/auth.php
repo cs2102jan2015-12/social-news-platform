@@ -19,6 +19,8 @@ class AuthController extends Controller
         // If this is post data:
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             $user = $this->user->verifyUserCredentials($_POST['username'], $_POST['password']);
+            
+            // Valid user credentials.
             if ($user) {
                 $_SESSION['user'] = $user;
 
@@ -26,12 +28,22 @@ class AuthController extends Controller
                 session_write_close();
                 header('location: ' . URL_WITH_INDEX_FILE . '');
             }
+            // Invalid user credentials.
+            else {
+                $message = "Your username and/or password is incorrect.";
+                require APP . 'views/_templates/header.php';
+                require APP . 'views/error/message.php';
+                require APP . 'views/auth/login.php';
+                require APP . 'views/_templates/footer.php';
+            }
         }
 
         // If this is get data:
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/auth/login.php';
-        require APP . 'views/_templates/footer.php';
+        else {
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/auth/login.php';
+            require APP . 'views/_templates/footer.php';
+        }
     }
 
     public function logout() {

@@ -54,7 +54,7 @@ class User
 
         if ($query->execute($parameters)) { // If the query is successful...
             $user = $query->fetch(); // Fetch the array of attributes of the user.
-            if (password_verify($password, $user->hash)) {
+            if ($user && password_verify($password, $user->hash)) {
                 return $user; // Return the user.
             }
         }
