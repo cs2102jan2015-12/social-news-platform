@@ -9,7 +9,7 @@ $(function() {
     	demoHeaderBox = $('#javascript-header-demo-box');
     	demoHeaderBox
     		.hide()
-    		.text('Hello from JavaScript! This line has been added by public/js/application.js')
+    		.text('This is javascript')
     		.css('color', 'green')
     		.fadeIn('slow');
     }

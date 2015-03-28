@@ -1,0 +1,1 @@
+DROP DATABASE social_news_platform;
