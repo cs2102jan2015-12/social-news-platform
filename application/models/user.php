@@ -21,24 +21,36 @@ class User
      * @param string $password Password
      */
     public function addUser($username, $password) {
-        // TODO: Username validation.
+        if (!(strlen($username) > 0)) {
+            return array('message' => 'Username must not be empty.');
+        }
+        if (!(strlen($password) > 0)) {
+            return array('message' => 'Password must not be empty.');
+        }
+
+        // Allow PDO to throw exceptions. May want to set this globally?
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "INSERT INTO User (username, hash) VALUES (:username, :hash)";
         $query = $this->db->prepare($sql);
         $parameters = array(':username' => $username, ':hash' => password_hash($password, PASSWORD_DEFAULT));
 
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
-
-        if ($query->execute($parameters)) { // If the query is successful...
+        try {
+            $query->execute($parameters);
             $sql = "SELECT * FROM User WHERE uid = :lastInsertId";
             $query = $this->db->prepare($sql);
             $query->execute(array(':lastInsertId' => $this->db->lastInsertId())); // Execute query first, then...
             $user = $query->fetch(); // Fetch the array of attributes of the user.
-            return $user; // Return the user.
+            return array('user' => $user); // Return the user.
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) { // SQLStates 23000 is duplicate key error.
+                return array('message' => 'This username is already taken.');
+            }
+            return array('message' => $e->getMessage());
         }
 
-        return false; // If it hits here, return false to signify failure.
+        // If it hits here, something unknown has happened.
+        return array('message' => 'Something has happened. We are not sure what.');
     }
 
     /**
