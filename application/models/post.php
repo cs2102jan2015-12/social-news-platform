@@ -41,7 +41,7 @@ class Post
             $query->execute($parameters);
             $tagID = $query->fetch();
             
-            if ($tagID = null) { // tag is new, create new entry
+            if ($tagID === null) { // tag is new, create new entry
                 $sql = "INSERT INTO TAG (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);

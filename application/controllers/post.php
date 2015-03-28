@@ -16,6 +16,11 @@ class PostController extends Controller
      */
     public function index()
     {
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+            $post = $this->model->writePost($_POST['title'], $_POST['content'], $_POST['date'], $_POST['author']);
+        }
+        
         // load views
         require APP . 'views/_templates/header.php';
         require APP . 'views/home/index.php';
