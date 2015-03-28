@@ -3,40 +3,52 @@
 <div class="container">
 
    <?php
-        echo "Post ID is " . $_GET['pid'];
+    
+        if (!empty($_GET['pid'])) {
+            echo "Post ID is " . $_GET['pid'];
         
-        echo "<table style='border: solid 1px black;'>";
-        echo "<tr><th>pid</th><th>title</th><th>content</th><th>submitted</th><th>hidden</th><th>author</th></tr>";
+            
+            class TableRows extends RecursiveIteratorIterator {
+                function __construct($it) {
+                    parent::__construct($it, self::LEAVES_ONLY);
+                }
 
-        class TableRows extends RecursiveIteratorIterator {
-            function __construct($it) {
-                parent::__construct($it, self::LEAVES_ONLY);
-            }
+                function current() {
+                    return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
+                }
 
-            function current() {
-                return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
-            }
+                function beginChildren() {
+                    echo "<tr>";
+                }
 
-            function beginChildren() {
-                echo "<tr>";
-            }
-
-            function endChildren() {
-                echo "</tr>" . "\n";
-            }
-        } 
+                function endChildren() {
+                    echo "</tr>" . "\n";
+                }
+            } 
         
-        try {
+           // try {
             $post = $this->post->getPost($_GET['pid']);
-         
-            foreach(new TableRows(new RecursiveArrayIterator($post)) as $k=>$v) {
-                echo $v;
+                
+            if ($post) {
+                
+                echo "<table style='border: solid 1px black;'>";
+                echo "<tr><th>pid</th><th>title</th><th>content</th><th>submitted</th><th>hidden</th><th>author</th></tr>";
+
+                foreach(new TableRows(new RecursiveArrayIterator($post)) as $k=>$v) {
+                    echo $v;
+                }
+            } else {
+                echo "<h2>Post does not exist! </h2>";
             }
+            //}
+            //catch(PDOException $e) {
+               // echo "<h2>Post does not exist! </h2>";
+            //}
+            
+            echo "</table>";
+        } else {
+            echo "<h2> Empty post number. </h2>";
         }
-        catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        echo "</table>";
         
     ?>
     
