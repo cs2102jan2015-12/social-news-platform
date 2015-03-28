@@ -30,14 +30,35 @@ class User
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
 
-        if ($query->execute($parameters) > 0) { // If the query is successful...
-            $sql = "SELECT * FROM User WHERE username = :username";
+        if ($query->execute($parameters)) { // If the query is successful...
+            $sql = "SELECT * FROM User WHERE uid = :lastInsertId";
             $query = $this->db->prepare($sql);
-            $query->execute(array(':username' => $username)); // Execute query first, then...
-            $user = $query->fetch(PDO::FETCH_ASSOC); // Fetch the array of attributes of the user.
+            $query->execute(array(':lastInsertId' => $this->db->lastInsertId())); // Execute query first, then...
+            $user = $query->fetch(); // Fetch the array of attributes of the user.
             return $user; // Return the user.
         }
 
         return false; // If it hits here, return false to signify failure.
+    }
+
+    /**
+     * Verify a user's credentials.
+     *
+     * @param string $username Username
+     * @param string $password Password
+     */
+    public function verifyUserCredentials($username, $password) {
+        $sql = "SELECT * FROM User WHERE username = :username";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':username' => $username);
+
+        if ($query->execute($parameters)) { // If the query is successful...
+            $user = $query->fetch(); // Fetch the array of attributes of the user.
+            if (password_verify($password, $user->hash)) {
+                return $user; // Return the user.
+            }
+        }
+
+        return null; // Return null to denote false and signify failure.
     }
 }
