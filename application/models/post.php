@@ -22,6 +22,7 @@ class Post
      * @param string $content content
      * @param string $submitted date
      * @param string $uID author
+     * @param array $tags tags
      */
     public function writePost($title, $content, $submitted, $uID, $tags) { // $tags is an array
         
@@ -69,6 +70,54 @@ class Post
     }
     
     /**
+     * Edit a post in database
+     *
+     * @param int $pID pID
+     * @param string $title title
+     * @param string $content content
+     * @param array $tags tags
+     */
+    public function editPost($pID, $title, $content, $tags) {
+        $sql = "UPDATE Post SET title = :title WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':pID' => $pID, ':title' => $title));
+        
+        $sql = "UPDATE Post SET content = :content WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':pID' => $pID, ':content' => content));
+        
+        $sql = "DELETE FROM PostTags WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':pID' => $pID));
+        
+        foreach ($tags as $tag) {
+            // if statement for checking whether the tag is a new one
+            $sql = "SELECT tID FROM Tag GROUP BY name HAVING name = :tag";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':tag' => $tag);
+            $query->execute($parameters);
+            $tagID = $query->fetch();
+            
+            if ($tagID === null) { // tag is new, create new entry
+                $sql = "INSERT INTO TAG (name) VALUES (:tag)";
+                $query = $this->db->prepare($sql);
+                $parameters = array(':tag' => $tag);
+                $query->execute($parameters);
+                $tagID = $this->db->lastInsertId();
+            }
+            
+            //create posttage entity for each pair
+            $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':pID' => $postID, 'tID' => $tagID);
+            $query->execute($parameters);
+            
+        }
+        
+    }
+    
+    
+    /**
      * Get a post from database using post ID
      *
      * @param int $pID pID
@@ -81,6 +130,17 @@ class Post
         $query->execute($parameters);
          
         // fetch() is the PDO method that get exactly one result
+        return $query->fetch(); 
+    }
+    
+    /**
+     * Get all posts from database that are not hidden
+     *
+     */
+    public function getAllPosts() {
+        $sql = "SELECT * FROM Post WHERE hidden = 0";
+        $query = $this->db->prepare($sql); 
+        $query->execute($parameters);
         return $query->fetch(); 
     }
     
