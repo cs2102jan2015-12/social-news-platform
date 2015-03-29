@@ -70,7 +70,7 @@ class Post
     }
     
     /**
-     * Edit a post in database
+     * Edit a post in database.
      *
      * @param int $pID pID
      * @param string $title title
@@ -86,6 +86,7 @@ class Post
         $query = $this->db->prepare($sql);
         $query->execute(array(':pID' => $pID, ':content' => content));
         
+        // Remove all PostTags relations between this post and all the tags it has
         $sql = "DELETE FROM PostTags WHERE pID = :pID";
         $query = $this->db->prepare($sql);
         $query->execute(array(':pID' => $pID));
@@ -116,6 +117,43 @@ class Post
         
     }
     
+    /**
+     * Hide post. (For users, it will be displayed as "delete" function)
+     * 
+     * @param int $pID pID
+     */
+    public function hidePost($pID) {
+        $sql = "UPDATE Post SET hidden = 1 WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pID' => $pID);
+        $query->execute($parameters);
+    }
+    
+    /**
+     * Undo the hide function on a post.
+     * Normally inaccessible to users: only for admins to restore the post.
+     * 
+     * @param int $pID pID
+     */
+    public function unhidePost($pID) {
+        $sql = "UPDATE Post SET hidden = 0 WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pID' => $pID);
+        $query->execute($parameters);
+    }
+    
+         /**
+     * Delete post.
+     * Normally inaccessible to users: only for admins to remove the post from DB.
+     * 
+     * @param int $pID pID
+     */
+     public function deletePost($pID) {
+         $sql = "DELETE FROM Post WHERE pID = :pID";
+         $query = $this->db->prepare($sql);
+         $parameters = array(':pID' => $pID);
+         $query->execute($parameters);
+     }
     
     /**
      * Get a post from database using post ID
