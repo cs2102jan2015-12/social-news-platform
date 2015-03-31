@@ -25,34 +25,26 @@ if (!$this) {
     <link href="<?php echo URL; ?>public/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- header -->
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                </button>
+                <a class="navbar-brand" href="<?php echo URL_WITH_INDEX_FILE; ?>">Not Reddit</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>register">Register</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/login">Login</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
-        <!-- Info -->
-        <div class="where-are-we-box">
-            This box is gray.
-        </div>
-        
-        <!--<h1>The header (used on all pages)</h1>
-        <!-- demo image -->
-        <!--<h3>Demo image, to show usage of public/img folder</h3>
-        <div>
-            <img src="<?php echo URL; ?>public/img/demo-image.png" alt="Demo image">
-        </div>
-        <!-- navigation -->
-        <!--<h3>Demo Navigation</h3>
-        <div class="navigation">
-            <ul>
-                <!-- same like "home" or "home/index" -->
-                <li><a href="<?php echo URL_WITH_INDEX_FILE; ?>">home</a></li>
-                <!--<li><a href="<?php echo URL_WITH_INDEX_FILE; ?>home/exampleone"><?php echo URL_WITH_INDEX_FILE; ?>home/exampleone</a></li>
-                
-                <!-- "songs" and "songs/index" are the same -->
-                <!--<li><a href="<?php echo URL_WITH_INDEX_FILE; ?>songs/"><?php echo URL_WITH_INDEX_FILE; ?>songs/index</a></li>
-            </ul>
-        </div>
-        
-        <!-- simple div for javascript output, just to show how to integrate js into this MVC construct -->
-        <!--<h3>Demo JavaScript</h3>-->
-        <div id="javascript-header-demo-box">
-        </div>
-    </div>
