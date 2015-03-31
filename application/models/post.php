@@ -175,11 +175,45 @@ class Post
      * Get all posts from database that are not hidden
      *
      */
-    public function getAllPosts() {
-        $sql = "SELECT * FROM Post WHERE hidden = 0";
-        $query = $this->db->prepare($sql); 
-        $query->execute($parameters);
-        return $query->fetch(); 
+    public function getAllPosts()
+    {
+        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS username, p.submitted AS submitted
+            FROM Post p, User u
+            WHERE p.author = u.uid AND
+            p.hidden = 0
+            ORDER BY p.submitted";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        // fetchAll() is the PDO method that gets all result rows, here in object-style because we defined this in
+        // core/controller.php! If you prefer to get an associative array as the result, then do
+        // $query->fetchAll(PDO::FETCH_ASSOC); or change core/controller.php's PDO options to
+        // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
+        return $query->fetchAll();
     }
     
+    /**
+     * Get all posts with the given tag name
+     *
+     * @param str $tag_name tag_name
+     */
+    public function getPosts($tag_name)
+    {
+        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS username, p.submitted AS submitted
+            FROM Post p, User u, PostTags pt, Tag t
+            WHERE p.author = u.uid AND
+            p.hidden = 0 AND
+            p.pid = pt.pid AND
+            pt.tid = t.tid AND
+            t.name = :tag_name
+            ORDER BY p.submitted";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':tag_name' => $tag_name));
+
+        // fetchAll() is the PDO method that gets all result rows, here in object-style because we defined this in
+        // core/controller.php! If you prefer to get an associative array as the result, then do
+        // $query->fetchAll(PDO::FETCH_ASSOC); or change core/controller.php's PDO options to
+        // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
+        return $query->fetchAll();
+    }
 }
