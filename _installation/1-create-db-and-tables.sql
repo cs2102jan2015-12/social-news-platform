@@ -1,11 +1,18 @@
+-- Drop the existing database (if any).
+DROP DATABASE IF EXISTS social_news_platform;
+
+-- (Re-)Create the database.
+CREATE DATABASE social_news_platform;
 USE social_news_platform;
+
+-- Create the tables:
 
 CREATE TABLE User (
   uid INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
   hash VARCHAR(255) NOT NULL,
-  banned INT NOT NULL,
-  admin INT NOT NULL,
+  banned INT NOT NULL DEFAULT 0,
+  admin INT NOT NULL DEFAULT 0,
   PRIMARY KEY (uid)
 );
 
@@ -14,7 +21,7 @@ CREATE TABLE Post (
   title VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
   submitted DATE NOT NULL,
-  hidden INT NOT NULL,
+  hidden INT NOT NULL DEFAULT 0,
   author INT NOT NULL,
   PRIMARY KEY (pid),
   FOREIGN KEY (author) REFERENCES User(uid)
@@ -24,7 +31,7 @@ CREATE TABLE Comment (
   cid INT NOT NULL AUTO_INCREMENT,
   content VARCHAR(255) NOT NULL,
   submitted DATE NOT NULL,
-  hidden INT NOT NULL,
+  hidden INT NOT NULL DEFAULT 0,
   author INT NOT NULL,
   parent INT NOT NULL,
   PRIMARY KEY (cid),
