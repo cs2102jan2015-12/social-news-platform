@@ -28,7 +28,7 @@ class PostController extends Controller
         require APP . 'views/post/indiv_post.php';
         require APP . 'views/_templates/footer.php';
     }
-
+    
     /**
      * 
      */
@@ -40,10 +40,11 @@ class PostController extends Controller
             $content = $_POST['content'];
             $user = $_SESSION['user']['uid'];
             $tags = explode(",", $_POST['tags']);
+            $tags = array_map('trim', $tags);
+            $tags = array_filter($tags, 'strlen');
             $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
             
             if(empty($title) || empty($content)) {
-                // Find a way to return the title/content if it wasn't empty
                 $message = 'Title and content cannot be empty!';
             } else {
                 $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
@@ -58,6 +59,8 @@ class PostController extends Controller
         require APP . 'views/_templates/footer.php';
     }
     
+    
+    
     /**
      * Overloaded loadModel() method. This method is called on __construct().
      */
@@ -70,5 +73,7 @@ class PostController extends Controller
         // create new "model" (and pass the database connection)
         $this->comment = new Comment($this->db);
     }
+    
+    
     
 }
