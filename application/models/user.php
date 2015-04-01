@@ -41,7 +41,9 @@ class User
             $query = $this->db->prepare($sql);
             $query->execute(array(':lastInsertId' => $this->db->lastInsertId())); // Execute query first, then...
             $user = $query->fetch(); // Fetch the array of attributes of the user.
-            return array('user' => $user); // Return the user.
+            
+            // Return username and uid.
+            return array('user' => array('username' => $user->username, 'uid' => $user->uid));
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) { // SQLStates 23000 is duplicate key error.
                 return array('message' => 'This username is already taken.');
@@ -67,7 +69,8 @@ class User
         if ($query->execute($parameters)) { // If the query is successful...
             $user = $query->fetch(); // Fetch the array of attributes of the user.
             if ($user && password_verify($password, $user->hash)) {
-                return $user; // Return the user.
+                // Return username and uid.
+                return array('user' => array('username' => $user->username, 'uid' => $user->uid));
             }
         }
 

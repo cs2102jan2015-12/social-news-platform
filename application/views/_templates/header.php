@@ -43,6 +43,11 @@ if (!$this) {
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
                     </li>
+                    <?php if (isset($_SESSION['user'])) { ?>
+                    <li>
+                        <span class="navbar-text">Hello <?php echo $_SESSION['user']['username']; ?></span>
+                    </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>

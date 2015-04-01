@@ -22,7 +22,7 @@ class AuthController extends Controller
             
             // Valid user credentials.
             if ($user) {
-                $_SESSION['user'] = $user;
+                $_SESSION['user'] = $user['user'];
 
                 // Ensure session is written before redirecting to index.
                 session_write_close();
