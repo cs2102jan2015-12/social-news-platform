@@ -24,9 +24,38 @@ class PostController extends Controller
        }
         
         $this->pid = $pid;
-            require APP . 'views/_templates/header.php';
-            require APP . 'views/post/indiv_post.php';
-            require APP . 'views/_templates/footer.php';
+        require APP . 'views/_templates/header.php';
+        require APP . 'views/post/indiv_post.php';
+        require APP . 'views/_templates/footer.php';
+    }
+
+    /**
+     * 
+     */
+    public function newpost()
+    {
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $user = $_SESSION['user']['uid'];
+            $tags = explode(",", $_POST['tags']);
+            $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
+            
+            if(empty($title) || empty($content)) {
+                // Find a way to return the title/content if it wasn't empty
+                $message = 'Title and content cannot be empty!';
+            } else {
+                $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
+                header('location: ' . URL_WITH_INDEX_FILE . 'post/', $response);
+            }
+        }
+        
+        // load views
+        require APP . 'views/_templates/header.php';
+        require APP . 'views/error/message.php';
+        require APP . 'views/post/writenew.php'; 
+        require APP . 'views/_templates/footer.php';
     }
     
     /**
@@ -41,5 +70,5 @@ class PostController extends Controller
         // create new "model" (and pass the database connection)
         $this->comment = new Comment($this->db);
     }
-
+    
 }
