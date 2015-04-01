@@ -3,12 +3,8 @@
 <div class="container">
 
    <?php
-    
-        if (!empty($_GET['pid'])) {
-            echo "Post ID is " . $_GET['pid'];
-        
-            
-            class TableRows extends RecursiveIteratorIterator {
+   
+   class TableRows extends RecursiveIteratorIterator {
                 function __construct($it) {
                     parent::__construct($it, self::LEAVES_ONLY);
                 }
@@ -25,8 +21,11 @@
                     echo "</tr>" . "\n";
                 }
             } 
+        $pid = $this->pid;
+        if (!empty($pid)) {
+            echo "Post ID is " . $pid;
         
-            $post = $this->post->getPost($_GET['pid']);
+            $post = $this->post->getPost($pid);
                 
             if ($post) {
                 
@@ -55,9 +54,9 @@
 <div class="container">
 
    <?php
-    
-        if (!empty($_GET['pid'])) {
-            $postID = $_GET['pid'];
+        $pid = $this->pid;
+        if (!empty($pid)) {
+            $postID = $pid;
         
             $comment = $this->comment->getAllCommentsOfPost($postID);
                 

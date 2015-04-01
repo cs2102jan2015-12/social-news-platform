@@ -51,14 +51,18 @@ class Application
 
             } else {
                 if(strlen($this->url_action) == 0) {
+                    
                     // no action defined: call the default index() method of a selected controller
                     $this->url_controller->index();
+                    
                 }
                 else {
+                    // use that as parameter for index
+                    $this->url_controller->index($this->url_action);
                     // defined action not existent: show the error page
-                    require APP . 'controllers/error.php';
-                    $page = new Error();
-                    $page->index();
+                  //  require APP . 'controllers/error.php';
+                   // $page = new Error();
+                   // $page->index();
                 }
             }
         } else {

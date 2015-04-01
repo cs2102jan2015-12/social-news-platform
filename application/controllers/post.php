@@ -14,17 +14,24 @@ class PostController extends Controller
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/post/index (which is the default page btw)
      */
-    public function index()
+    public function index($pid)
     {
         
-        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-            $post = $this->model->writePost($_POST['title'], $_POST['content'], $_POST['date'], $_POST['author']);
-        }
+        //if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+          //  $post = $this->model->writePost($_POST['title'], $_POST['content'], $_POST['date'], $_POST['author']);
+        //}
         
-        // load views
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/home/index.php';
-        require APP . 'views/_templates/footer.php';
+        $this->pid = $pid;
+       // if (is_int($pid)) {
+            // load views
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/post/indiv_post.php';
+            require APP . 'views/_templates/footer.php';
+        //} else {
+            //require APP . 'views/_templates/header.php';
+           // require APP . 'views/error/message.php';
+           // require APP . 'views/_templates/footer.php';
+        //}
     }
 
     /**
