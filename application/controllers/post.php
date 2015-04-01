@@ -48,9 +48,9 @@ class PostController extends Controller
         require APP . '/models/post.php';
         // create new "model" (and pass the database connection)
         $this->post = new Post($this->db);
-        //require APP . '/models/comment.php';
+        require APP . '/models/comment.php';
         // create new "model" (and pass the database connection)
-        //$this->comment = new Comment($this->db);
+        $this->comment = new Comment($this->db);
     }
 
 }
