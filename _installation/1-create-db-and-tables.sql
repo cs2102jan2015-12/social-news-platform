@@ -20,7 +20,7 @@ CREATE TABLE Post (
   pid INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
-  submitted DATE NOT NULL,
+  submitted DATETIME NOT NULL,
   hidden INT NOT NULL DEFAULT 0,
   author INT NOT NULL,
   PRIMARY KEY (pid),
@@ -30,7 +30,7 @@ CREATE TABLE Post (
 CREATE TABLE Comment (
   cid INT NOT NULL AUTO_INCREMENT,
   content VARCHAR(255) NOT NULL,
-  submitted DATE NOT NULL,
+  submitted DATETIME NOT NULL,
   hidden INT NOT NULL DEFAULT 0,
   author INT NOT NULL,
   parent INT NOT NULL,
@@ -73,7 +73,7 @@ CREATE Table PostVote (
 CREATE TABLE PostReport (
   uid INT NOT NULL,
   pid INT NOT NULL,
-  submitted DATE NOT NULL,
+  submitted DATETIME NOT NULL,
   PRIMARY KEY (uid, pid),
   FOREIGN KEY (uid) REFERENCES User(uid),
   FOREIGN KEY (pid) REFERENCES Post(pid)
@@ -91,7 +91,7 @@ CREATE Table CommentVote (
 CREATE TABLE CommentReport (
   uid INT NOT NULL,
   cid INT NOT NULL,
-  submitted DATE NOT NULL,
+  submitted DATETIME NOT NULL,
   PRIMARY KEY (uid, cid),
   FOREIGN KEY (uid) REFERENCES User(uid),
   FOREIGN KEY (cid) REFERENCES Comment(cid)

@@ -22,25 +22,16 @@ class Comment
      * @param string $uID author
      * @param array $pid parent
      */
-    public function addComment($content, $submitted, $uID, $pid) { 
+    public function addComment($content, $uid, $pid) { 
         
         $sql = "INSERT INTO Comment (content, submitted, author, parent) VALUES (:content, :submitted, :author, :parent)";
         $query = $this->db->prepare($sql);
-        $parameters = array(':content' => $content, ':submitted' => $submitted, ':author' => $uID, 'parent' => $pid);
+        $parameters = array(':content' => $content,'submitted' => date('Y-m-d H:i:s'), ':author' => $uid, 'parent' => $pid);
         
         $query->execute($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
         $cid = $this->db->lastInsertId();
-        
-        if ($query->execute($parameters) > 0) { // If the query is successful...
-            $sql = "SELECT * FROM Comment WHERE cid = :cid";
-            $query = $this->db->prepare($sql);
-            $query->execute(array(':cid' => $cid)); // Execute query first, then...
-            $comment = $query->fetch(PDO::FETCH_ASSOC); // Fetch the array of attributes of the user.
-            return $comment; // Return the post.
-        }
-
         return false; // If it hits here, return false to signify failure.
     }
     
@@ -110,7 +101,8 @@ class Comment
                 FROM Comment c, User u
                 WHERE c.hidden = 0 
                 AND c.parent = :pid
-                AND u.uid = c.author";
+                AND u.uid = c.author
+                ORDER BY c.submitted DESC";
         $query = $this->db->prepare($sql); 
         $parameters = array(':pid' => $pid);
         $query->execute($parameters);

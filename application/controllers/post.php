@@ -17,9 +17,11 @@ class PostController extends Controller
     public function index($pid)
     {
         
-        //if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-          //  $post = $this->model->writePost($_POST['title'], $_POST['content'], $_POST['date'], $_POST['author']);
-        //}
+       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+           if (isset($_POST['comment']) && trim($_POST['comment']) !=='')
+            $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
+            header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
+       }
         
         $this->pid = $pid;
             require APP . 'views/_templates/header.php';

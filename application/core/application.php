@@ -18,7 +18,7 @@ class Application
     public function __construct() {
         // Begins the user session for persistent login.
         session_start();
-
+        date_default_timezone_set ('Asia/Kuala_Lumpur');
         // create array with URL parts in $url
         $this->getUrlWithoutModRewrite();
 

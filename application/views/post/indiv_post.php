@@ -31,6 +31,30 @@
         
     ?>
 </div>
+<div class = "container-newcomment">
+    <?php
+    
+    if (!empty($pid)) {
+        if (array_key_exists('user', $_SESSION)) { ?>
+            <h3>Post Comment</h3>
+            <form action="" id="cmtform" method="POST">
+            <div>
+                <textarea style="width:100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
+            </div>
+        
+            <input type="submit" value="Send">
+            </form>
+    
+        <?php } else { ?>
+            <h3>Login to comment!</h3>
+            <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/login">Login</a>
+    <?php 
+        }
+    }
+    ?>
+    
+    
+</div>
 <div class = "container-comments">
    <?php
         
@@ -39,7 +63,9 @@
         
             $comment_list = $this->comment->getAllCommentsOfPost($postID);
                 
-            if ($comment_list) {
+            if ($comment_list) { ?>
+                <div align = "center"><h3> Comments </h3></div>
+                <?php
                 foreach($comment_list as $comment) {
                  echo "<h4>" . $comment->author . "</h4>";
                 ?>
