@@ -41,6 +41,10 @@
             }
             
             echo "</table>";
+            
+            if ($post) {
+                echo $post->title;
+            }
         } else {
             echo "<h2> Empty post number. </h2>";
         }
