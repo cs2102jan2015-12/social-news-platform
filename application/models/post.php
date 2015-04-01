@@ -21,36 +21,42 @@ class Post
      * @param string $title title
      * @param string $content content
      * @param string $submitted date
-     * @param string $uID author
+     * @param int $uID author
      * @param array $tags tags
      */
     public function writePost($title, $content, $submitted, $uID, $tags) { // $tags is an array
-        
+    
         $sql = "INSERT INTO Post (title, content, submitted, author) VALUES (:title, :content, :submitted, :author)";
         $query = $this->db->prepare($sql);
         $parameters = array(':title' => $title, ':content' => $content, ':submitted' => $submitted, ':author' => $uID);
-        $query->execute($parameters);
+        $successful = $query->execute($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
         $postID = $this->db->lastInsertId();
+        echo "Post ID is ", $postID, " ";
         
         foreach ($tags as $tag) {
             // if statement for checking whether the tag is a new one
-            $sql = "SELECT tID FROM Tag GROUP BY name HAVING name = :tag";
+            echo "Tag is ", $tag, "\r\n";
+            $sql = "SELECT tID FROM Tag WHERE name = :tag";
             $query = $this->db->prepare($sql);
             $parameters = array(':tag' => $tag);
             $query->execute($parameters);
-            $tagID = $query->fetch();
             
-            if ($tagID === null) { // tag is new, create new entry
-                $sql = "INSERT INTO TAG (name) VALUES (:tag)";
+            $tagID = $query->fetchColumn(0);
+
+            if ($tagID == false) { // tag is new, create new entry
+                echo "tag not found\r\n";
+                $sql = "INSERT INTO Tag (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);
                 $query->execute($parameters);
                 $tagID = $this->db->lastInsertId();
             }
             
-            //create posttage entity for each pair
+            echo "Second tagID check: ", $tagID, "\r\n";
+            
+            //create posttag entity for each pair
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
             $query = $this->db->prepare($sql);
             $parameters = array(':pID' => $postID, 'tID' => $tagID);
@@ -58,7 +64,8 @@ class Post
             
         }
 
-        if ($query->execute($parameters) > 0) { // If the query is successful...
+        if ($successful > 0) { // If the query is successful...
+            echo "Successful\r\n";
             $sql = "SELECT * FROM Post WHERE pID = :pID";
             $query = $this->db->prepare($sql);
             $query->execute(array(':pID' => $postID)); // Execute query first, then...
@@ -84,7 +91,7 @@ class Post
         
         $sql = "UPDATE Post SET content = :content WHERE pID = :pID";
         $query = $this->db->prepare($sql);
-        $query->execute(array(':pID' => $pID, ':content' => content));
+        $query->execute(array(':pID' => $pID, ':content' => $content));
         
         // Remove all PostTags relations between this post and all the tags it has
         $sql = "DELETE FROM PostTags WHERE pID = :pID";
@@ -97,9 +104,9 @@ class Post
             $query = $this->db->prepare($sql);
             $parameters = array(':tag' => $tag);
             $query->execute($parameters);
-            $tagID = $query->fetch();
+            $tagID = $query->fetchColumn(0);
             
-            if ($tagID === null) { // tag is new, create new entry
+            if ($tagID == false) { // tag is new, create new entry
                 $sql = "INSERT INTO TAG (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);
@@ -110,7 +117,7 @@ class Post
             //create posttage entity for each pair
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
             $query = $this->db->prepare($sql);
-            $parameters = array(':pID' => $postID, 'tID' => $tagID);
+            $parameters = array(':pID' => $pID, 'tID' => $tagID);
             $query->execute($parameters);
             
         }
@@ -149,6 +156,12 @@ class Post
      * @param int $pID pID
      */
      public function deletePost($pID) {
+         
+         $sql = "DELETE FROM PostTags WHERE pID = :pID";
+         $query = $this->db->prepare($sql);
+         $parameters = array(':pID' => $pID);
+         $query->execute($parameters);
+         
          $sql = "DELETE FROM Post WHERE pID = :pID";
          $query = $this->db->prepare($sql);
          $parameters = array(':pID' => $pID);
@@ -159,9 +172,14 @@ class Post
      * Get a post from database using post ID
      *
      * @param int $pID pID
+     * 
+     * @return title, content submitted author
      */
-    public function getPost($pID) {
-        $sql = "SELECT * FROM Post WHERE pID = :pID";
+    public function getPostInformation($pID) {
+        $sql = "SELECT p.title AS title, p.content AS content, p.submitted AS submitted, u.username AS author  
+                FROM Post p, User u 
+                WHERE p.pID = :pID 
+                AND u.uid = p.author";
         $query = $this->db->prepare($sql); 
         $parameters = array(':pID' => $pID);
         

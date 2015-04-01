@@ -18,7 +18,7 @@ class Application
     public function __construct() {
         // Begins the user session for persistent login.
         session_start();
-
+        date_default_timezone_set ('Asia/Kuala_Lumpur');
         // create array with URL parts in $url
         $this->getUrlWithoutModRewrite();
 
@@ -51,14 +51,18 @@ class Application
 
             } else {
                 if(strlen($this->url_action) == 0) {
+                    
                     // no action defined: call the default index() method of a selected controller
                     $this->url_controller->index();
+                    
                 }
                 else {
+                    // use that as parameter for index
+                    $this->url_controller->index($this->url_action);
                     // defined action not existent: show the error page
-                    require APP . 'controllers/error.php';
-                    $page = new Error();
-                    $page->index();
+                  //  require APP . 'controllers/error.php';
+                   // $page = new Error();
+                   // $page->index();
                 }
             }
         } else {

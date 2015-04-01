@@ -4,6 +4,8 @@ USE social_news_platform;
 -- Certain tables must be cleared first to prevent foreign key constraint errors.
 DELETE FROM PostVote;
 ALTER TABLE PostVote AUTO_INCREMENT = 1;
+DELETE FROM Comment;
+ALTER TABLE Comment AUTO_INCREMENT = 1;
 DELETE FROM Post;
 ALTER TABLE Post AUTO_INCREMENT = 1;
 DELETE FROM User;
@@ -37,14 +39,29 @@ INSERT INTO User (username, hash)
 
 
 /*
- * Post fixtures.
- */
+* Post fixtures.
+*/
 
-INSERT INTO Post (pID, title, content, submitted, author)
-    VALUES (1, "title1", "post yada yada yada oneeee", CURDATE(), 1);
+DELETE FROM Post;
+ALTER TABLE Post AUTO_INCREMENT = 1; -- Safe to use because we deleted all rows.
+INSERT INTO Post (title, content, submitted, author)
+VALUES ("Monster", "I'm just a man with a candle to guide me.", '2015-03-29 18:12:53', 1);
+INSERT INTO Post (title, content, submitted, author)
+VALUES ("My Little Musings", "I believe there is a God, but I'm not sure he believes in us.", '2015-03-30 15:17:22', 2);
 
-INSERT INTO Post (pID, title, content, submitted, author)
-    VALUES (2, "titlehtwo", "I believe there is a God, but I'm not sure he believes in us.", CURDATE(), 1);
+
+/*
+Comment fixtures.
+*/
+
+INSERT INTO Comment (content, submitted, author, parent)
+VALUES ("OMG! I love that song!", '2015-03-31 09:10:34', 2, 1);
+INSERT INTO Comment (content, submitted, author, parent)
+VALUES ("IKR!! I'm taking a stand to escape what's inside me~", '2015-03-31 10:10:23', 1, 1);
+INSERT INTO Comment (content, submitted, author, parent)
+VALUES ("Wah. Why so emo one?", '2015-03-31 12:45:12', 1, 2);
+INSERT INTO Comment (content, submitted, author, parent)
+VALUES (":P Just feeling weird today.", '2015-03-31 23:07:02', 2, 2);
 
 
 /*
