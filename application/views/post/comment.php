@@ -26,7 +26,6 @@
                 }
             } 
         
-           // try {
             $post = $this->post->getPost($_GET['pid']);
                 
             if ($post) {
@@ -40,10 +39,6 @@
             } else {
                 echo "<h2>Post does not exist! </h2>";
             }
-            //}
-            //catch(PDOException $e) {
-               // echo "<h2>Post does not exist! </h2>";
-            //}
             
             echo "</table>";
         } else {
