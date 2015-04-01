@@ -60,10 +60,7 @@ class Post
         }
 
         if ($successful > 0) { // If the query is successful...
-            $sql = "SELECT * FROM Post WHERE pID = :pID";
-            $query = $this->db->prepare($sql);
-            $query->execute(array(':pID' => $postID)); // Execute query first, then...
-            $post = $query->fetch(PDO::FETCH_ASSOC); // Fetch the array of attributes of the user.
+            
             return $postID; // Return the post.
         }
 
