@@ -41,10 +41,11 @@ class PostController extends Controller
             $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
             
             if(empty($title) || empty($content)) {
+                // Find a way to return the title/content if it wasn't empty
                 $message = 'Title and content cannot be empty!';
             } else {
-                $this->post->writePost($title, $content, $submitted, $user, $tags);
-                
+                $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
+                header('location: ' . URL_WITH_INDEX_FILE . 'post/', $response);
             }
         }
         

@@ -64,7 +64,7 @@ class Post
             $query = $this->db->prepare($sql);
             $query->execute(array(':pID' => $postID)); // Execute query first, then...
             $post = $query->fetch(PDO::FETCH_ASSOC); // Fetch the array of attributes of the user.
-            return $post; // Return the post.
+            return $postID; // Return the post.
         }
 
         return false; // If it hits here, return false to signify failure.
