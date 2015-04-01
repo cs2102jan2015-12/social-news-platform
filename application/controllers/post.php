@@ -37,13 +37,15 @@ class PostController extends Controller
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             
-        $this->post->writePost($_POST['title'], $_POST['content'], $_SERVER['REQUEST_TIME'], $_SESSION['user']['uid'], explode(",", $_POST['tags']));
+            $tags = explode(",", $_POST['tags']);
+            $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
+            $this->post->writePost($_POST['title'], $_POST['content'], $submitted, $_SESSION['user']['uid'], $tags);
         
         
         }
         // load views
         require APP . 'views/_templates/header.php';
-        require APP . 'views/post/write.php'; 
+        require APP . 'views/post/writenew.php'; 
         require APP . 'views/_templates/footer.php';
     }
     

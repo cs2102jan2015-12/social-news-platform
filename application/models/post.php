@@ -33,11 +33,9 @@ class Post
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
         $postID = $this->db->lastInsertId();
-        echo "Post ID is ", $postID, " ";
         
         foreach ($tags as $tag) {
             // if statement for checking whether the tag is a new one
-            echo "Tag is ", $tag, "\r\n";
             $sql = "SELECT tID FROM Tag WHERE name = :tag";
             $query = $this->db->prepare($sql);
             $parameters = array(':tag' => $tag);
@@ -46,15 +44,12 @@ class Post
             $tagID = $query->fetchColumn(0);
 
             if ($tagID == false) { // tag is new, create new entry
-                echo "tag not found\r\n";
                 $sql = "INSERT INTO Tag (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);
                 $query->execute($parameters);
                 $tagID = $this->db->lastInsertId();
             }
-            
-            echo "Second tagID check: ", $tagID, "\r\n";
             
             //create posttag entity for each pair
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
@@ -65,7 +60,6 @@ class Post
         }
 
         if ($successful > 0) { // If the query is successful...
-            echo "Successful\r\n";
             $sql = "SELECT * FROM Post WHERE pID = :pID";
             $query = $this->db->prepare($sql);
             $query->execute(array(':pID' => $postID)); // Execute query first, then...
