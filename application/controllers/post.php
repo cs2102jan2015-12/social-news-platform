@@ -28,23 +28,29 @@ class PostController extends Controller
     }
 
     /**
-     * PAGE: individual posts with comments
-     * This method handles what happens when you move to http://yourproject/post/comments/____
-     * The camelCase writing is just for better readability. The method name is case-insensitive.
+     * 
      */
     public function newpost()
     {
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-            
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $user = $_SESSION['user']['uid'];
             $tags = explode(",", $_POST['tags']);
             $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
-            $this->post->writePost($_POST['title'], $_POST['content'], $submitted, $_SESSION['user']['uid'], $tags);
-        
-        
+            
+            if(empty($title) || empty($content)) {
+                $message = 'Title and content cannot be empty!';
+            } else {
+                $this->post->writePost($title, $content, $submitted, $user, $tags);
+                
+            }
         }
+        
         // load views
         require APP . 'views/_templates/header.php';
+        require APP . 'views/error/message.php';
         require APP . 'views/post/writenew.php'; 
         require APP . 'views/_templates/footer.php';
     }

@@ -1,3 +1,7 @@
-<div class="message">
-    There was an error. <?php echo $message; ?>
-</div>
+<?php if(isset($message)) { ?>
+    <div class="message">
+        <?php
+            echo "There was an error. ", $message;
+        ?>
+    </div>
+<?php } ?>
