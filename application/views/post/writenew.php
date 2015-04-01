@@ -8,15 +8,15 @@
     <form action="newpost" method="POST">
         <div>
             <span>Title</span>
-            <input type="text" name="title">
+            <input value="<?php if(isset($message)) { echo $_POST['title'];} ?>" type="text" name="title">
         </div>
         <div>
             <span>Content</span>
-            <input type="textarea" name="content">
+            <input value="<?php if(isset($message)) { echo $_POST['content'];} ?>" type="textarea" name="content">
         </div>
         <div>
             <span>Tags</span>
-            <input type="text" name="tags">
+            <input value="<?php if(isset($message)) { echo $_POST['tags'];} ?>" type="text" name="tags">
         </div>
         <input type="submit" value="Submit">
     </form>
