@@ -26,7 +26,6 @@
                 }
             } 
         
-           // try {
             $post = $this->post->getPost($_GET['pid']);
                 
             if ($post) {
@@ -40,14 +39,43 @@
             } else {
                 echo "<h2>Post does not exist! </h2>";
             }
-            //}
-            //catch(PDOException $e) {
-               // echo "<h2>Post does not exist! </h2>";
-            //}
+            
+            echo "</table>";
+            
+            if ($post) {
+                echo $post->title;
+            }
+        } else {
+            echo "<h2> Empty post number. </h2>";
+        }
+        
+    ?>
+    
+</div>
+<div class="container">
+
+   <?php
+    
+        if (!empty($_GET['pid'])) {
+            $postID = $_GET['pid'];
+        
+            $comment = $this->comment->getAllCommentsOfPost($postID);
+                
+            if ($comment) {
+                
+                echo "<table style='border: solid 1px black;'>";
+                echo "<tr><th>cid</th><th>content</th><th>submitted</th><th>hidden</th><th>author</th><th>parent</th></tr>";
+
+                foreach(new TableRows(new RecursiveArrayIterator($comment)) as $k=>$v) {
+                    echo $v;
+                }
+            } else {
+                echo "<h2>Comment does not exist! </h2>";
+            }
             
             echo "</table>";
         } else {
-            echo "<h2> Empty post number. </h2>";
+            echo "<h2> Empty Post number. </h2>";
         }
         
     ?>
