@@ -48,7 +48,7 @@ class PostController extends Controller
                 $message = 'Title and content cannot be empty!';
             } else {
                 $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
-                header('location: ' . URL_WITH_INDEX_FILE . 'post/', $response);
+                header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
             }
         }
         
