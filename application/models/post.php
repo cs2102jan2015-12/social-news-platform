@@ -25,7 +25,7 @@ class Post
      * @param array $tags tags
      */
     public function writePost($title, $content, $submitted, $uID, $tags) { // $tags is an array
-        
+    
         $sql = "INSERT INTO Post (title, content, submitted, author) VALUES (:title, :content, :submitted, :author)";
         $query = $this->db->prepare($sql);
         $parameters = array(':title' => $title, ':content' => $content, ':submitted' => $submitted, ':author' => $uID);
@@ -42,13 +42,16 @@ class Post
             $query->execute($parameters);
             $tagID = $query->fetch();
             
-            if ($tagID === null) { // tag is new, create new entry
-                $sql = "INSERT INTO TAG (name) VALUES (:tag)";
+            if ($tagID == null) { // tag is new, create new entry
+            echo "tag ID not found";
+                $sql = "INSERT INTO Tag (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);
                 $query->execute($parameters);
                 $tagID = $this->db->lastInsertId();
             }
+            
+            
             
             //create posttage entity for each pair
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";

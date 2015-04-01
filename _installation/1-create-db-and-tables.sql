@@ -1,4 +1,11 @@
+-- Drop the existing database (if any).
+DROP DATABASE IF EXISTS social_news_platform;
+
+-- (Re-)Create the database.
+CREATE DATABASE social_news_platform;
 USE social_news_platform;
+
+-- Create the tables:
 
 CREATE TABLE User (
   uid INT NOT NULL AUTO_INCREMENT,

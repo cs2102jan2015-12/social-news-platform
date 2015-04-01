@@ -18,20 +18,33 @@ class RegisterController extends Controller
     {
         // if we have POST data
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-            $user = $this->user->addUser($_POST['username'], $_POST['password']);
-            if ($user) {
-                $_SESSION['user'] = $user;
+            $response = $this->user->addUser($_POST['username'], $_POST['password']);
+
+            // Valid user registration:
+            if (isset($response['user'])) {
+                $_SESSION['user'] = $response['user'];
 
                 // Ensure session is written before redirecting.
                 session_write_close();
                 header('location: ' . URL_WITH_INDEX_FILE . 'register/complete');
             }
+
+            // Invalid user registration:
+            else {
+                $message = $response['message'];
+                require APP . 'views/_templates/header.php';
+                require APP . 'views/error/message.php';
+                require APP . 'views/register/index.php';
+                require APP . 'views/_templates/footer.php';
+            }
         }
 
-        // load views
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/register/index.php';
-        require APP . 'views/_templates/footer.php';
+        // If HTTP method is GET:
+        else {
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/register/index.php';
+            require APP . 'views/_templates/footer.php';
+        }
     }
     
     public function complete() {
