@@ -32,11 +32,18 @@ class PostController extends Controller
      * This method handles what happens when you move to http://yourproject/post/comments/____
      * The camelCase writing is just for better readability. The method name is case-insensitive.
      */
-    public function comment()
+    public function newpost()
     {
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+            
+        $this->post->writePost($_POST['title'], $_POST['content'], $_SERVER['REQUEST_TIME'], $_SESSION['user']['uid'], explode(",", $_POST['tags']));
+        
+        
+        }
         // load views
         require APP . 'views/_templates/header.php';
-        require APP . 'views/post/comment.php'; 
+        require APP . 'views/post/write.php'; 
         require APP . 'views/_templates/footer.php';
     }
     
@@ -52,5 +59,5 @@ class PostController extends Controller
         // create new "model" (and pass the database connection)
         $this->comment = new Comment($this->db);
     }
-
+    
 }
