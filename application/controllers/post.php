@@ -42,7 +42,7 @@ class PostController extends Controller
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
-            $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
+            $submitted = date('Y-m-d H:i:s');
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
