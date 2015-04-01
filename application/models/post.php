@@ -172,9 +172,14 @@ class Post
      * Get a post from database using post ID
      *
      * @param int $pID pID
+     * 
+     * @return title, content submitted author
      */
-    public function getPost($pID) {
-        $sql = "SELECT * FROM Post WHERE pID = :pID";
+    public function getPostInformation($pID) {
+        $sql = "SELECT p.title AS title, p.content AS content, p.submitted AS submitted, u.username AS author  
+                FROM Post p, User u 
+                WHERE p.pID = :pID 
+                AND u.uid = p.author";
         $query = $this->db->prepare($sql); 
         $parameters = array(':pID' => $pID);
         

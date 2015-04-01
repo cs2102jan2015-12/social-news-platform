@@ -1,81 +1,63 @@
 <?php if (!$this) { exit(header('HTTP/1.0 403 Forbidden')); } ?>
 
-<div class="container">
+<div class="container-post">
 
    <?php
-   
-   class TableRows extends RecursiveIteratorIterator {
-                function __construct($it) {
-                    parent::__construct($it, self::LEAVES_ONLY);
-                }
-
-                function current() {
-                    return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
-                }
-
-                function beginChildren() {
-                    echo "<tr>";
-                }
-
-                function endChildren() {
-                    echo "</tr>" . "\n";
-                }
-            } 
         $pid = $this->pid;
         if (!empty($pid)) {
-            echo "Post ID is " . $pid;
         
-            $post = $this->post->getPost($pid);
+            $post = $this->post->getPostInformation($pid);
                 
             if ($post) {
                 
-                echo "<table style='border: solid 1px black;'>";
-                echo "<tr><th>pid</th><th>title</th><th>content</th><th>submitted</th><th>hidden</th><th>author</th></tr>";
-
-                foreach(new TableRows(new RecursiveArrayIterator($post)) as $k=>$v) {
-                    echo $v;
-                }
+                echo "<h2>" . $post->title . "</h2>";
+                ?>
+                
+                <div class="container-content">
+                    <p><h3><?php echo $post->content ?></h3></p>
+                    <p align = "right">Authored by <font color="orange"><?php echo $post->author; ?></font></p>
+                    <p align = "right">Submitted on <font color="green"><?php echo $post->submitted; ?></font></p>
+                    
+                </div>
+                <?php
+                
             } else {
                 echo "<h2>Post does not exist! </h2>";
             }
             
-            echo "</table>";
-            
-            if ($post) {
-                echo $post->title;
-            }
         } else {
             echo "<h2> Empty post number. </h2>";
         }
         
     ?>
-    
 </div>
-<div class="container">
-
+<div class = "container-comments">
    <?php
-        $pid = $this->pid;
+        
         if (!empty($pid)) {
             $postID = $pid;
         
-            $comment = $this->comment->getAllCommentsOfPost($postID);
+            $comment_list = $this->comment->getAllCommentsOfPost($postID);
                 
-            if ($comment) {
+            if ($comment_list) {
+                foreach($comment_list as $comment) {
+                 echo "<h4>" . $comment->author . "</h4>";
+                ?>
                 
-                echo "<table style='border: solid 1px black;'>";
-                echo "<tr><th>cid</th><th>content</th><th>submitted</th><th>hidden</th><th>author</th><th>parent</th></tr>";
-
-                foreach(new TableRows(new RecursiveArrayIterator($comment)) as $k=>$v) {
-                    echo $v;
+                <div class="container-content">
+                    <p><h5><?php echo $comment->content ?></h5></p>
+                    <!-- <p align = "right">Authored by <font color="orange"><?php //echo $comment->author; ?></font></p> -->
+                    <p align = "right">Submitted on <font color="green"><?php echo $comment->submitted; ?></font></p>
+                    
+                </div>
+                
+                <?php
                 }
             } else {
-                echo "<h2>Comment does not exist! </h2>";
+                echo "No Comments.";
             }
             
-            echo "</table>";
-        } else {
-            echo "<h2> Empty Post number. </h2>";
-        }
+        } 
         
     ?>
     

@@ -22,29 +22,9 @@ class PostController extends Controller
         //}
         
         $this->pid = $pid;
-       // if (is_int($pid)) {
-            // load views
             require APP . 'views/_templates/header.php';
             require APP . 'views/post/indiv_post.php';
             require APP . 'views/_templates/footer.php';
-        //} else {
-            //require APP . 'views/_templates/header.php';
-           // require APP . 'views/error/message.php';
-           // require APP . 'views/_templates/footer.php';
-        //}
-    }
-
-    /**
-     * PAGE: individual posts with comments
-     * This method handles what happens when you move to http://yourproject/post/comments/____
-     * The camelCase writing is just for better readability. The method name is case-insensitive.
-     */
-    public function comment()
-    {
-        // load views
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/post/comment.php'; 
-        require APP . 'views/_templates/footer.php';
     }
     
     /**

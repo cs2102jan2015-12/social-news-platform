@@ -101,9 +101,16 @@ class Comment
      * Get all comments that belong to a particular post
      * 
      * @param $pid pid
+     * 
+     * @return content submitted author
+     * 
      */
     public function getAllCommentsOfPost($pid) {
-        $sql = "SELECT * FROM Comment WHERE hidden = 0 AND parent = :pid";
+        $sql = "SELECT c.content AS content, c.submitted AS submitted, u.username AS author
+                FROM Comment c, User u
+                WHERE c.hidden = 0 
+                AND c.parent = :pid
+                AND u.uid = c.author";
         $query = $this->db->prepare($sql); 
         $parameters = array(':pid' => $pid);
         $query->execute($parameters);
