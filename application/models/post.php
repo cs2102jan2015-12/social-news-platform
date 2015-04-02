@@ -190,7 +190,7 @@ class Post
     */
     public function getTagsOfPost($pid) {
          $sql = "SELECT t.tid AS tid, t.name AS tagname 
-                FROM Post p, Tag t, PostTag pt 
+                FROM Post p, Tag t, PostTags pt 
                 WHERE p.pid = :pid
                 AND p.pid = pt.pid
                 AND t.tid = pt.tid";

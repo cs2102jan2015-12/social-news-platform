@@ -13,7 +13,7 @@
         if (!empty($pid)) {
         
             $post = $this->post->getPostInformation($pid);
-            $tags = $this->post->
+            $tags = $this->post->getTagsOfPost($pid);
                 
             if ($post) {
                 
@@ -24,9 +24,23 @@
                     <p><h3><?php echo $post->content ?></h3></p>
                     <p align = "right">Authored by <font color="orange"><?php echo $post->author; ?></font></p>
                     <p align = "right">Submitted on <font color="green"><?php echo $post->submitted; ?></font></p>
+                <?php
+                if ($tags) {
+                    echo "<p align = 'right'>";
+                    foreach($tags as $tag) {
+                        ?>
+                       <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed/<?php echo $tag->tid; ?>">#<?php echo $tag->tagname; ?></a>&nbsp;
+                       <?php
+                    }
+                    echo "</p>";
+                }
                     
+                    
+                ?>
                 </div>
                 <?php
+                
+                
                 
             } else {
                 echo "<h2>Post does not exist! </h2>";
