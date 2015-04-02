@@ -7,6 +7,7 @@
         if (!empty($pid)) {
         
             $post = $this->post->getPostInformation($pid);
+            $tags = $this->post->
                 
             if ($post) {
                 
@@ -39,7 +40,7 @@
             <h3>Post Comment</h3>
             <form action="" id="cmtform" method="POST">
             <div>
-                <textarea style="width:100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
+                <textarea style=" width:100%; max-width: 100%; min-width: 100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
             </div>
         
             <input type="submit" value="Send">
