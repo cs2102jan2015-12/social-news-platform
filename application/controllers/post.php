@@ -14,9 +14,11 @@ class PostController extends Controller
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/post/index (which is the default page btw)
      */
-    public function index($pid)
+    public function index($pid = null)
     {
+        if ($pid !== null) {
         
+<<<<<<< HEAD
        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
            if (isset($_POST['comment']) && trim($_POST['comment']) !=='')
             $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
@@ -26,6 +28,48 @@ class PostController extends Controller
         $this->pid = $pid;
         require APP . 'views/_templates/header.php';
         require APP . 'views/post/indiv_post.php';
+=======
+            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+                if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
+                    $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
+                    header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
+                }
+            }
+            
+            $this->pid = $pid;
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/post/indiv_post.php';
+            require APP . 'views/_templates/footer.php';
+        } else {
+            header('location: ' . URL_WITH_INDEX_FILE . 'feed/');
+        }
+    }
+    
+    public function newpost()
+    {
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $user = $_SESSION['user']['uid'];
+            $tags = explode(",", $_POST['tags']);
+            $tags = array_map('trim', $tags);
+            $tags = array_filter($tags, 'strlen');
+            $submitted = date('Y-m-d H:i:s');
+            
+            if(empty($title) || empty($content)) {
+                $message = 'Title and content cannot be empty!';
+            } else {
+                $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
+                header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
+            }
+        }
+        
+        // load views
+        require APP . 'views/_templates/header.php';
+        require APP . 'views/error/message.php';
+        require APP . 'views/post/writenew.php'; 
+>>>>>>> Fixed conflicts
         require APP . 'views/_templates/footer.php';
     }
     
