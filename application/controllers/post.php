@@ -72,6 +72,10 @@ class PostController extends Controller
         require APP . '/models/comment.php';
         // create new "model" (and pass the database connection)
         $this->comment = new Comment($this->db);
+        
+        // Load votes model to count votes on template load.
+        require APP . '/models/vote.php';
+        $this->vote = new Vote($this->db);
     }
     
     
