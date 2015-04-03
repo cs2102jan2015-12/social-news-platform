@@ -160,7 +160,7 @@ class Vote
      * 
      * @return int : Value of vote.
      */
-    public function getVotesOfPostBy($cid, $uid) {
+    public function getVotesOfCommentBy($cid, $uid) {
         $sql = "SELECT SUM(value) AS value FROM CommentVote WHERE cid = :cid AND uid = :uid";
         $query = $this->db->prepare($sql);
         $query->execute(array(':cid' => $cid, ':uid' => $uid));

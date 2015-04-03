@@ -22,7 +22,7 @@ if (!$this) {
 
     <!-- CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="<?php echo URL; ?>public/css/style.css" rel="stylesheet">-->
+    <link href="<?php echo URL; ?>public/css/style.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-inverse">

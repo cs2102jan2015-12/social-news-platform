@@ -42,19 +42,19 @@ class VotesController extends Controller {
             
             $uid = $_SESSION['user']['uid'];
             
-            $currentVote = $this->vote->getVotesOfPostBy($pid, $uid)['value'];
+            $currentVote = $this->vote->getVotesOfPostBy($pid, $uid)->value;
             
             if (($action === 'upvote' && $currentVote > 0)
                 || ($action === 'downvote' && $currentVote < 0)) // If unvoting...
             {
                 $result = $this->vote->unvotePost($pid, $uid);
-                $result['action'] = 'unvote';
+                $result->action = 'unvote';
             } else if ($action === 'upvote') { // If upvoting...
                 $result = $this->vote->upvotePost($pid, $uid);
-                $result['action'] = 'upvote';
+                $result->action = 'upvote';
             } else if ($action === 'downvote') { // If downvoting...
                 $result = $this->vote->downvotePost($pid, $uid);
-                $result['action'] = 'downvote';
+                $result->action = 'downvote';
             }
         }
         

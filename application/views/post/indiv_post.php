@@ -1,7 +1,11 @@
 <?php if (!$this) { exit(header('HTTP/1.0 403 Forbidden')); } ?>
 
 <div class="container-post">
-
+    <div class="vote-panel">
+        <a class="upvote" href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $pid ?>/upvote">&#x25B2;</a>
+        <span class="count">0</span>
+        <a class="downvote" href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $pid ?>/downvote">&#x25BC;</a>
+    </div> 
    <?php
         $pid = $this->pid;
         if (!empty($pid)) {

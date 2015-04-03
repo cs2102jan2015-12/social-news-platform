@@ -3,24 +3,29 @@
     
     function sendPostRequest(event) {
         event.preventDefault();
+        var self = this;
         $.post($(this).attr('href'), function(data) {
             /* data = {
              *  votes: int,
              *  action: string [upvote|downvote|unvote]
              * }
              */
+            data = JSON.parse(data);
             
-            $(this).siblings().removeClass('active');
+            // Update arrow highlight.
+            $(self).siblings().addBack().removeClass('active');
             if (data.action === 'upvote') {
-                $(this).siblings('.upvote').addClass('active');
+                $(self).addClass('active');
             } else if (data.action === 'downvote') {
-                $(this).siblings('.downvote').addClass('active');
+                $(self).addClass('active');
             }
             
-            $(this).siblings('.count').text(data.votes);
+            // Update text display.
+            $(self).siblings('.count').text(data.votes);
         });
     }
     
+    // .upvote and .downvote should be siblings with a .count.
     $('.upvote').click(sendPostRequest);
     $('.downvote').click(sendPostRequest);
     
