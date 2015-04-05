@@ -59,7 +59,64 @@ class PostController extends Controller
         require APP . 'views/_templates/footer.php';
     }
     
+    public function editPost($pid) {
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'GET') {
+            
+            $response = $this->post->getPostInformation($pid);
+            
+            $title = $response->title;
+            $content = $response->content;
+            
+            $tags = "";
+            $response = $this->post->getPostTags($pid);
+            
+            foreach ($response as $tagInfo) {
+                $tags .= $tagInfo->tagName;
+                $tags .= ", ";
+            }
+            $tags = substr($tags, 0, -2);
+            $post['tags'] = $tags;
+            
+            
+        }
+        
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+            
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $tags = explode(",", $_POST['tags']);
+            $tags = array_map('trim', $tags);
+            $tags = array_filter($tags, 'strlen');
+            
+            if(empty($title) || empty($content)) {
+                $message = 'Title and content cannot be empty!';
+            } else {
+                $response = $this->post->editPost($pid, $title, $content, $tags);
+                header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
+            }
+            
+        }
+        
+        require APP . 'views/_templates/header.php';
+        require APP . 'views/error/message.php';
+        require APP . 'views/post/writemod.php'; 
+        require APP . 'views/_templates/footer.php';
+        
+    }
     
+    public function delete($pid) {
+        $this->post->deletePost($pid);
+        
+    }
+    
+    public function hide($pid) {
+        $this->post->hidePost($pid);
+    }
+    
+    public function unhide($pid) {
+        $this->post->unhidePost($pid);
+    }
     
     /**
      * Overloaded loadModel() method. This method is called on __construct().

@@ -111,6 +111,13 @@ class Post
             $parameters = array(':pID' => $pID, 'tID' => $tagID);
             $query->execute($parameters);
             
+            if ($successful > 0) { // If the query is successful...
+            
+                return $postID; // Return the post.
+            }
+
+        return false; // If it hits here, return false to signify failure.
+            
         }
         
     }
@@ -178,6 +185,14 @@ class Post
          
         // fetch() is the PDO method that get exactly one result
         return $query->fetch(); 
+    }
+    
+    public function getPostTags($pID) {
+        $sql = "SELECT t.name AS tagName FROM PostTags p, Tag t WHERE p.pid = :pID AND t.tid = p.tid";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pID' => $pID);
+        $query->execute($parameters);
+        return $query->fetchAll();
     }
     
     /**
