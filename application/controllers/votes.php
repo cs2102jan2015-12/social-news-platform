@@ -108,8 +108,10 @@ class VotesController extends Controller {
                 $result->action = 'unvote';
             } else if ($action === 'upvote') {
                 $result = $this->vote->upvoteComment($cid, $uid);
+                $result->action = 'upvote';
             } else if ($action === 'downvote') {
                 $result = $this->vote->downvoteComment($cid, $uid);
+                $result->action = 'downvote';
             }
         }
         
