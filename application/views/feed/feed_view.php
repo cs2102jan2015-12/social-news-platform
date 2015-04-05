@@ -4,6 +4,9 @@
     <?php
       foreach ($posts as $post) {
         require APP . 'views/post/post.php';
+    ?>
+        <hr>
+    <?php
       }
     ?>
 </div>
