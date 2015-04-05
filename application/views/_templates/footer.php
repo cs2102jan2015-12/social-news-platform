@@ -13,5 +13,6 @@
 
     <!-- our JavaScript -->
     <!--<script src="<?php echo URL; ?>public/js/application.js"></script>-->
+    <script src="<?php echo URL; ?>public/js/votes.js"></script>
 </body>
 </html>

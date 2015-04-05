@@ -1,7 +1,13 @@
 <?php if (!$this) { exit(header('HTTP/1.0 403 Forbidden')); } ?>
 
 <div class="container-post">
-
+    <div class="vote-panel">
+        <a class="upvote <?php if ($this->vote->getVotesOfPostBy($pid, $_SESSION['user']['uid'])->value > 0) { echo 'active'; } ?>"
+           href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $pid ?>/upvote">&#x25B2;</a>
+        <span class="count"><?php echo $this->vote->getVotesOfPost($pid)->votes; ?></span>
+        <a class="downvote <?php if ($this->vote->getVotesOfPostBy($pid, $_SESSION['user']['uid'])->value < 0) { echo 'active'; } ?>"
+           href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $pid ?>/downvote">&#x25BC;</a>
+    </div> 
    <?php
         $pid = $this->pid;
         if (!empty($pid)) {
