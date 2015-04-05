@@ -22,8 +22,9 @@ class PostController extends Controller
             $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
             header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
        }
-        
-        $this->pid = $pid;
+
+        $post = $this->post->getPostInformation($pid);
+
         require APP . 'views/_templates/header.php';
         require APP . 'views/post/indiv_post.php';
         require APP . 'views/_templates/footer.php';

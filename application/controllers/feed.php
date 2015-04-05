@@ -35,5 +35,9 @@ class FeedController extends Controller
     {
         require APP . '/models/post.php';
         $this->posts = new Post($this->db);
+        
+        // Load votes model to count votes on template load.
+        require APP . '/models/vote.php';
+        $this->vote = new Vote($this->db);
     }
 }
