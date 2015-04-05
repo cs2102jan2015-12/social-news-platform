@@ -97,7 +97,7 @@ class Comment
      * 
      */
     public function getAllCommentsOfPost($pid) {
-        $sql = "SELECT c.content AS content, c.submitted AS submitted, u.username AS author
+        $sql = "SELECT c.cid AS cid, c.content AS content, c.submitted AS submitted, u.username AS author
                 FROM Comment c, User u
                 WHERE c.hidden = 0 
                 AND c.parent = :pid

@@ -26,7 +26,7 @@ class PostController extends Controller
             
             $this->pid = $pid;
             require APP . 'views/_templates/header.php';
-            require APP . 'views/post/indiv_post.php';
+            require APP . 'views/post/test_post.php';
             require APP . 'views/_templates/footer.php';
         } else {
             header('location: ' . URL_WITH_INDEX_FILE . 'feed/');
