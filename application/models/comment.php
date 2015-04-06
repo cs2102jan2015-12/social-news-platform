@@ -43,9 +43,9 @@ class Comment
      */
     public function editComment($cid, $newContent) {
         
-        $sql = "UPDATE Comment SET content = :newContent WHERE cid = :cid";
+        $sql = "UPDATE Comment SET content = :newContent, submitted = :newsubmitted WHERE cid = :cid";
         $query = $this->db->prepare($sql);
-        $query->execute(array(':cid' => $cid, ':content' => $newContent));
+        $query->execute(array(':cid' => $cid, ':newContent' => $newContent, ':newsubmitted' => date('Y-m-d H:i:s')));
         
     }
     /**
@@ -123,6 +123,26 @@ class Comment
         $parameters = array(':pid' => $pid);
         $query->execute($parameters);
         return $query->fetchAll(); 
+
+    }
+    
+    /**
+     * Get a comment
+     * 
+     * @param $cid cid
+     * 
+     * @return content submitted author
+     * 
+     */
+    public function getComment($cid) {
+        $sql = "SELECT c.cid AS cid, c.content AS content
+                FROM Comment c
+                WHERE c.hidden = 0 
+                AND c.cid = :cid;";
+        $query = $this->db->prepare($sql); 
+        $parameters = array(':cid' => $cid);
+        $query->execute($parameters);
+        return $query->fetch(); 
 
     }
     

@@ -21,28 +21,16 @@
                     <?php if ($_SESSION['user']['uid'] === $post->uid): ?>
                     <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/edit/<?php echo $pid; ?>">Edit</a>&nbsp;    
                     <?php endif; ?>
-                    <?php if (($_SESSION['user']['uid'] === $post->uid) /*|| (check if admin)*/) : ?>
+                    <?php if (($_SESSION['user']['uid'] === $post->uid) || ($_SESSION['user']['isAdmin'])) : ?>
                     <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/delete/<?php echo $pid; ?>">Delete</a>&nbsp;
                     <?php endif; ?>
                     <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/report/<?php echo $pid; ?>">Report</a>&nbsp;
                 <?php endif; ?>                    
             </div>
             <hr>
-            <div class = "container-newcomment">
-                <?php if (array_key_exists('user', $_SESSION)): ?>
-                    <h3>Post Comment</h3>
-                    <form action="" id="cmtform" method="POST">
-                        <div>
-                            <textarea style=" width:100%; max-width: 100%; min-width: 100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
-                        </div>
-                        <input type="submit" value="Send">
-                    </form>
-    
-                <?php else: ?>
-                    <h3>Login to comment!</h3>
-                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/login">Login</a>
-                <?php endif; ?>
-            </div>
+            <?php
+                require APP . 'views/comment/new.php';
+            ?>
             <hr>
             <div class = "container-comments">
                 <?php if ($comment_list): ?>
@@ -70,7 +58,7 @@
                             <?php if ($_SESSION['user']['uid'] === $comment->uid): ?>
                                 <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/edit/<?php echo $cid; ?>">Edit</a>&nbsp;    
                             <?php endif; ?>
-                            <?php if (($_SESSION['user']['uid'] === $comment->uid) /*|| (check if admin)*/) : ?>
+                            <?php if (($_SESSION['user']['uid'] === $comment->uid) || ($_SESSION['user']['isAdmin'])) : ?>
                                 <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/delete/<?php echo $cid; ?>">Delete</a>&nbsp;
                             <?php endif; ?>
                             <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/report/<?php echo $comment->uid; ?>">Report</a>&nbsp;

@@ -16,7 +16,18 @@ class CommentController extends Controller
      */
     public function edit($cid)
     {
-        //nothing
+        $pid = $this->comment->getParent($cid);
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+                if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
+                    $user = $this->comment->editComment($cid, $_POST['comment']);
+                    header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid->parent);
+                }
+            }
+            $comment = $this->comment->getComment($cid);
+           
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/comment/edit.php';
+            require APP . 'views/_templates/footer.php';
     }
     
     public function delete($cid)
