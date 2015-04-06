@@ -42,8 +42,6 @@ INSERT INTO User (username, hash)
 * Post fixtures.
 */
 
-DELETE FROM Post;
-ALTER TABLE Post AUTO_INCREMENT = 1; -- Safe to use because we deleted all rows.
 INSERT INTO Post (title, content, submitted, author)
 VALUES ("Monster", "I'm just a man with a candle to guide me.", '2015-03-29 18:12:53', 1);
 INSERT INTO Post (title, content, submitted, author)

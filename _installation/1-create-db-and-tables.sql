@@ -74,6 +74,7 @@ CREATE TABLE PostReport (
   uid INT NOT NULL,
   pid INT NOT NULL,
   submitted DATETIME NOT NULL,
+  reviewed INT NOT NULL DEFAULT 0,
   PRIMARY KEY (uid, pid),
   FOREIGN KEY (uid) REFERENCES User(uid),
   FOREIGN KEY (pid) REFERENCES Post(pid)
@@ -92,6 +93,7 @@ CREATE TABLE CommentReport (
   uid INT NOT NULL,
   cid INT NOT NULL,
   submitted DATETIME NOT NULL,
+  reviewed INT NOT NULL DEFAULT 0,
   PRIMARY KEY (uid, cid),
   FOREIGN KEY (uid) REFERENCES User(uid),
   FOREIGN KEY (cid) REFERENCES Comment(cid)

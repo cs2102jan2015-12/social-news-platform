@@ -6,6 +6,12 @@
         <?php foreach ($reportedPosts as $post) { ?>
             <?php require APP . 'views/post/post.php'; ?>
             <span>Reported by <?php echo $post->reporter; ?> on <?php echo $post->reportedTime ?></span>
+            <form action="<?php echo URL_WITH_INDEX_FILE; ?>admin/hide/post/<?php echo $post->pid; ?>" method="POST">
+                <input type="submit" value="Hide & Close">
+            </form>
+            <form action="<?php echo URL_WITH_INDEX_FILE; ?>admin/close/post/<?php echo $post->pid; ?>" method="POST">
+                <input type="submit" value="Close">
+            </form>
         <?php } ?>
     </div>
     
@@ -19,7 +25,13 @@
                 <p align = "right">Submitted on <font color="green"><?php echo $comment->submitted; ?></font></p>
                 
             </div>
-            <span>Reported by <?php echo $post->reporter; ?> on <?php echo $post->reportedTime ?></span>
+            <span>Reported by <?php echo $comment->reporter; ?> on <?php echo $comment->reportedTime ?></span>
+            <form action="<?php echo URL_WITH_INDEX_FILE; ?>admin/hide/comment/<?php echo $comment->cid; ?>" method="POST">
+                <input type="submit" value="Hide & Close">
+            </form>
+            <form action="<?php echo URL_WITH_INDEX_FILE; ?>admin/close/comment/<?php echo $comment->cid; ?>" method="POST">
+                <input type="submit" value="Close">
+            </form>
         <?php } ?>
     </div>
 </div>
