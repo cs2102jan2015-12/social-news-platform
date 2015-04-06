@@ -34,18 +34,24 @@ if (!$this) {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <?php if (isset($_SESSION['user'])) { ?>
+                    <li>
+                        <span class="navbar-text">Hello <?php echo $_SESSION['user']['username']; ?></span>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
+                    </li>
+                        <?php if ($_SESSION['user']['isAdmin']) { ?>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>admin">Admin</a>
+                    </li>
+                        <?php } ?>
+                    <?php } else { ?>
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>register">Register</a>
                     </li>
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/login">Login</a>
-                    </li>
-                    <li>
-                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
-                    </li>
-                    <?php if (isset($_SESSION['user'])) { ?>
-                    <li>
-                        <span class="navbar-text">Hello <?php echo $_SESSION['user']['username']; ?></span>
                     </li>
                     <?php } ?>
                 </ul>
