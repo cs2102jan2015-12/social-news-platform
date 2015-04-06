@@ -92,7 +92,6 @@ class Post
         $query->execute(array(':pID' => $pID));
         
         foreach ($tags as $tag) {
-            echo $tag;
             // if statement for checking whether the tag is a new one
             $sql = "SELECT tID FROM Tag GROUP BY name HAVING name = :tag";
             $query = $this->db->prepare($sql);
