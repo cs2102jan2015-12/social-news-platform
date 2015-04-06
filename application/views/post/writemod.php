@@ -18,6 +18,10 @@
             <span>Tags</span>
             <input value="<?php echo $tagString ?>" type="text" name="tags">
         </div>
+        <div>
+            <span>Link</span>
+            <input value="<?php echo $link ?>" type="text" name="link">
+        </div>
         <input type="submit" value="Submit">
     </form>
     

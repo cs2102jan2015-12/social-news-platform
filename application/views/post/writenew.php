@@ -18,6 +18,10 @@
             <span>Tags</span>
             <input value="<?php if(isset($message)) { echo $_POST['tags'];} ?>" type="text" name="tags">
         </div>
+        <div>
+            <span>Link</span>
+            <input value="<?php if(isset($message)) { echo $_POST['link'];} ?>" type="text" name="link">
+        </div>
         <input type="submit" value="Submit">
     </form>
     

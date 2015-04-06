@@ -24,11 +24,11 @@ class Post
      * @param int $uID author
      * @param array $tags tags
      */
-    public function writePost($title, $content, $submitted, $uID, $tags) { // $tags is an array
+    public function writePost($title, $content, $link, $submitted, $uID, $tags) { // $tags is an array
     
-        $sql = "INSERT INTO Post (title, content, submitted, author) VALUES (:title, :content, :submitted, :author)";
+        $sql = "INSERT INTO Post (title, content, link, submitted, author) VALUES (:title, :content, :link, :submitted, :author)";
         $query = $this->db->prepare($sql);
-        $parameters = array(':title' => $title, ':content' => $content, ':submitted' => $submitted, ':author' => $uID);
+        $parameters = array(':title' => $title, ':content' => $content, ':link' => $link, ':submitted' => $submitted, ':author' => $uID);
         $successful = $query->execute($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
@@ -75,7 +75,7 @@ class Post
      * @param string $content content
      * @param array $tags tags
      */
-    public function editPost($pID, $title, $content, $tags) {
+    public function editPost($pID, $title, $content, $link, $tags) {
         
         
         $sql = "UPDATE Post SET title = :title WHERE pID = :pID";
@@ -85,6 +85,10 @@ class Post
         $sql = "UPDATE Post SET content = :content WHERE pID = :pID";
         $query = $this->db->prepare($sql);
         $success2 = $query->execute(array(':pID' => $pID, ':content' => $content));
+        
+        $sql = "UPDATE Post SET link = :link WHERE pID = :pID";
+        $query = $this->db->prepare($sql);
+        $success3 = $query->execute(array(':pID' => $pID, ':link' => $link));
         
         // Remove all PostTags relations between this post and all the tags it has
         $sql = "DELETE FROM PostTags WHERE pID = :pID";
@@ -115,7 +119,7 @@ class Post
             
         }
         
-        $successful = $success1 && $success2;
+        $successful = $success1 && $success2 && $success3;
             
         if ($successful > 0) { // If the query is successful...
             return $pID; // Return the post.
@@ -177,7 +181,7 @@ class Post
      * @return title, content submitted author
      */
     public function getPostInformation($pID) {
-        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, u.username AS author, p.submitted AS submitted
+        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.link AS link, u.username AS author, p.submitted AS submitted
                 FROM Post p, User u 
                 WHERE p.pID = :pID 
                 AND u.uid = p.author";

@@ -39,6 +39,7 @@ class PostController extends Controller
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             $title = $_POST['title'];
             $content = $_POST['content'];
+            $link = $_POST['link'];
             $user = $_SESSION['user']['uid'];
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
@@ -47,12 +48,12 @@ class PostController extends Controller
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
-            } elseif (strlen($content) > 2147483647) {
+            } elseif (strlen($content) > 65535) {
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
             } else {
-                $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
+                $response = $this->post->writePost($title, $content, $link, $submitted, $user, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
             }
         }
@@ -72,6 +73,7 @@ class PostController extends Controller
             
             $title = $response->title;
             $content = $response->content;
+            $link = $response->link;
             
             $tagString = "";
             $response = $this->post->getPostTags($pid);
@@ -87,18 +89,19 @@ class PostController extends Controller
             
             $title = $_POST['title'];
             $content = $_POST['content'];
+            $link = $_POST['link'];
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
-            } elseif (strlen($content) > 2147483647) {
+            } elseif (strlen($content) > 65535) {
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
             } else {
-                $response = $this->post->editPost($pid, $title, $content, $tags);
+                $response = $this->post->editPost($pid, $title, $content, $link, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
             }
             
