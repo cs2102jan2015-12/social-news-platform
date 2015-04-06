@@ -110,4 +110,24 @@ class Comment
 
     }
     
+    /**
+     * Get all reported comments.
+     */
+    public function getReportedComments() {
+        $sql = "SELECT c.cid AS cid, c.content AS content, author.username AS author, c.submitted AS submitted,
+            c.parent AS pid,
+            reporter.username AS reporter, cr.submitted AS reportedTime
+            FROM Comment AS c
+            INNER JOIN CommentReport AS cr ON c.cid = cr.cid
+            INNER JOIN User AS reporter ON cr.uid = reporter.uid
+            INNER JOIN User AS author ON c.author = author.uid";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        // fetchAll() is the PDO method that gets all result rows, here in object-style because we defined this in
+        // core/controller.php! If you prefer to get an associative array as the result, then do
+        // $query->fetchAll(PDO::FETCH_ASSOC); or change core/controller.php's PDO options to
+        // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
+        return $query->fetchAll();
+    }
 }

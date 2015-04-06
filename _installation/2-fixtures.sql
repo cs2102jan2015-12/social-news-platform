@@ -78,3 +78,14 @@ INSERT INTO PostVote (uid, pid, value) VALUES (2, 2, 1);
 
 -- dummy user(3) upvotes post 1
 INSERT INTO PostVote (uid, pid, value) VALUES (3, 1, 1);
+
+
+/*
+ * Report fixtures.
+ */
+ 
+-- dummy user(3) reports post 1
+INSERT INTO PostReport (uid, pid, submitted) VALUES (3, 1, '2015-04-01 10:16:23');
+
+-- dummy user(3) reports comment 4
+INSERT INTO CommentReport (uid, cid, submitted) VALUES (3, 4, '2015-04-01 23:47:02');
