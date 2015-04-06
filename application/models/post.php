@@ -92,6 +92,7 @@ class Post
         $query->execute(array(':pID' => $pID));
         
         foreach ($tags as $tag) {
+            echo $tag;
             // if statement for checking whether the tag is a new one
             $sql = "SELECT tID FROM Tag GROUP BY name HAVING name = :tag";
             $query = $this->db->prepare($sql);
@@ -100,7 +101,7 @@ class Post
             $tagID = $query->fetchColumn(0);
             
             if ($tagID == false) { // tag is new, create new entry
-                $sql = "INSERT INTO TAG (name) VALUES (:tag)";
+                $sql = "INSERT INTO Tag (name) VALUES (:tag)";
                 $query = $this->db->prepare($sql);
                 $parameters = array(':tag' => $tag);
                 $query->execute($parameters);
@@ -111,17 +112,17 @@ class Post
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
             $query = $this->db->prepare($sql);
             $parameters = array(':pID' => $pID, 'tID' => $tagID);
-            $success3 = $query->execute($parameters);
-            
-            $successful = $success1 && $success2 && $success3;
-            
-            if ($successful > 0) { // If the query is successful...
-                return $pID; // Return the post.
-            }
-
-        return false; // If it hits here, return false to signify failure.
+            $query->execute($parameters);
             
         }
+        
+        $successful = $success1 && $success2;
+            
+        if ($successful > 0) { // If the query is successful...
+            return $pID; // Return the post.
+        }
+
+        return false; // If it hits here, return false to signify failure.
         
     }
     
