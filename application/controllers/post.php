@@ -14,25 +14,31 @@ class PostController extends Controller
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/post/index (which is the default page btw)
      */
-    public function index($pid)
+    public function index($pid = null)
     {
-        
-       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-           if (isset($_POST['comment']) && trim($_POST['comment']) !=='')
-            $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
-            header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
-       }
-
-        $post = $this->post->getPostInformation($pid);
-
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/post/indiv_post.php';
-        require APP . 'views/_templates/footer.php';
+        if ($pid !== null) {
+            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+                if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
+                    $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
+                    header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
+                }
+            }
+            
+            $post = $this->post->getPostInformation($pid);
+            if ($post) {
+                $tags = $this->post->getTagsOfPost($pid);
+                $comment_list = $this->comment->getAllCommentsOfPost($pid);
+                require APP . 'views/_templates/header.php';
+                require APP . 'views/post/indiv_post.php';
+                require APP . 'views/_templates/footer.php';
+            } else {
+                header('location: ' . URL_WITH_INDEX_FILE . 'home/');
+            }
+        } else {
+            header('location: ' . URL_WITH_INDEX_FILE . 'feed/');
+        }
     }
     
-    /**
-     * 
-     */
     public function newpost()
     {
         
@@ -43,7 +49,7 @@ class PostController extends Controller
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
-            $submitted = date("Y/m/d", $_SERVER['REQUEST_TIME']);
+            $submitted = date('Y-m-d H:i:s');
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
@@ -59,8 +65,6 @@ class PostController extends Controller
         require APP . 'views/post/writenew.php'; 
         require APP . 'views/_templates/footer.php';
     }
-    
-    
     
     /**
      * Overloaded loadModel() method. This method is called on __construct().
