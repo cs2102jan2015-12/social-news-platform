@@ -43,7 +43,9 @@ class User
             $user = $query->fetch(); // Fetch the array of attributes of the user.
             
             // Return username and uid.
-            return array('user' => array('username' => $user->username, 'uid' => $user->uid));
+            return array('user' => array('username' => $user->username,
+                                         'uid' => $user->uid,
+                                         'isAdmin' => $user->admin));
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) { // SQLStates 23000 is duplicate key error.
                 return array('message' => 'This username is already taken.');
@@ -70,7 +72,9 @@ class User
             $user = $query->fetch(); // Fetch the array of attributes of the user.
             if ($user && password_verify($password, $user->hash)) {
                 // Return username and uid.
-                return array('user' => array('username' => $user->username, 'uid' => $user->uid));
+                return array('user' => array('username' => $user->username,
+                                             'uid' => $user->uid,
+                                             'isAdmin' => $user->admin));
             }
         }
 
