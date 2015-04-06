@@ -23,7 +23,14 @@ class FeedController extends Controller
 
         // load views
         require APP . 'views/_templates/header.php';
-        require APP . 'views/feed/feed_view.php';
+        
+        $feeds = $this->feeds->getAllFeeds();
+        
+        if (isset($feeds)) {
+            require APP . 'views/feed/feeds.php';
+        }
+        
+        require APP . 'views/feed/posts.php';
         require APP . 'views/_templates/footer.php';
     }
     
@@ -33,6 +40,9 @@ class FeedController extends Controller
      */
     public function loadModel()
     {
+        require APP . '/models/feed.php';
+        $this->feeds = new Feed($this->db);
+        
         require APP . '/models/post.php';
         $this->posts = new Post($this->db);
         
