@@ -55,7 +55,7 @@ class PostController extends Controller
         // load views
         require APP . 'views/_templates/header.php';
         require APP . 'views/error/message.php';
-        require APP . 'views/post/writenew.php'; 
+        require APP . 'views/post/writenew.php';
         require APP . 'views/_templates/footer.php';
     }
     

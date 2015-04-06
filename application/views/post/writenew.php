@@ -12,7 +12,7 @@
         </div>
         <div>
             <span>Content</span>
-            <textarea name="content" rows="10" cols="50"><?php if(isset($message)) { echo $_POST['content'];} ?></textarea>
+            <textarea name="content" rows="10" cols="50"><?php if(isset($message)) { echo $_POST['content'];}?></textarea>
         </div>
         <div>
             <span>Tags</span>
