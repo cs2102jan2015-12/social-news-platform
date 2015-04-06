@@ -59,7 +59,7 @@ class PostController extends Controller
         require APP . 'views/_templates/footer.php';
     }
     
-    public function editPost($pid) {
+    public function editpost($pid) {
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'GET') {
             
@@ -68,17 +68,14 @@ class PostController extends Controller
             $title = $response->title;
             $content = $response->content;
             
-            $tags = "";
+            $tagString = "";
             $response = $this->post->getPostTags($pid);
             
             foreach ($response as $tagInfo) {
-                $tags .= $tagInfo->tagName;
-                $tags .= ", ";
+                $tagString .= $tagInfo->tagName;
+                $tagString .= ", ";
             }
-            $tags = substr($tags, 0, -2);
-            $post['tags'] = $tags;
-            
-            
+            $tagString = substr($tagString, 0, -2); // remove the last ", "
         }
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {

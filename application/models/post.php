@@ -76,13 +76,15 @@ class Post
      * @param array $tags tags
      */
     public function editPost($pID, $title, $content, $tags) {
+        
+        
         $sql = "UPDATE Post SET title = :title WHERE pID = :pID";
         $query = $this->db->prepare($sql);
-        $query->execute(array(':pID' => $pID, ':title' => $title));
+        $success1 = $query->execute(array(':pID' => $pID, ':title' => $title));
         
         $sql = "UPDATE Post SET content = :content WHERE pID = :pID";
         $query = $this->db->prepare($sql);
-        $query->execute(array(':pID' => $pID, ':content' => $content));
+        $success2 = $query->execute(array(':pID' => $pID, ':content' => $content));
         
         // Remove all PostTags relations between this post and all the tags it has
         $sql = "DELETE FROM PostTags WHERE pID = :pID";
@@ -109,11 +111,12 @@ class Post
             $sql = "INSERT INTO PostTags (pID, tID) VALUES (:pID, :tID)";
             $query = $this->db->prepare($sql);
             $parameters = array(':pID' => $pID, 'tID' => $tagID);
-            $query->execute($parameters);
+            $success3 = $query->execute($parameters);
+            
+            $successful = $success1 && $success2 && $success3;
             
             if ($successful > 0) { // If the query is successful...
-            
-                return $postID; // Return the post.
+                return $pID; // Return the post.
             }
 
         return false; // If it hits here, return false to signify failure.
@@ -174,7 +177,7 @@ class Post
      * @return title, content submitted author
      */
     public function getPostInformation($pID) {
-        $sql = "SELECT p.title AS title, p.content AS content, p.submitted AS submitted, u.username AS author  
+        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.submitted AS submitted, u.username AS author  
                 FROM Post p, User u 
                 WHERE p.pID = :pID 
                 AND u.uid = p.author";

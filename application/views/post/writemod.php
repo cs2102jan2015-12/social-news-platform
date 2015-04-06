@@ -5,18 +5,18 @@
         <?php if (array_key_exists('user', $_SESSION)) { ?>
     <h2>Edit the post</h2>
     
-    <form action="editpost" method="POST">
+    <form action="<?php echo $pid ?> " method="POST">
         <div>
             <span>Title</span>
-            <input value="<?php if(isset($message)) { echo $_POST['title'];} ?>" type="text" name="title">
+            <input value="<?php echo $title; ?>" type="text" name="title">
         </div>
         <div>
             <span>Content</span>
-            <textarea name="content" rows="10" cols="50"><?php if(isset($message)) { echo $_POST['content'];} ?></textarea>
+            <textarea name="content" rows="10" cols="50"><?php echo $content; ?></textarea>
         </div>
         <div>
             <span>Tags</span>
-            <input value="<?php if(isset($message)) { echo $_POST['tags'];} ?>" type="text" name="tags">
+            <input value="<?php echo $tagString ?>" type="text" name="tags">
         </div>
         <input type="submit" value="Submit">
     </form>
