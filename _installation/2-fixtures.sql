@@ -10,6 +10,12 @@ DELETE FROM Post;
 ALTER TABLE Post AUTO_INCREMENT = 1;
 DELETE FROM User;
 ALTER TABLE User AUTO_INCREMENT = 1;
+DELETE FROM Tag;
+ALTER TABLE Tag AUTO_INCREMENT = 1;
+DELETE FROM PostTags;
+ALTER TABLE PostTags AUTO_INCREMENT = 1;
+DELETE FROM Feed;
+ALTER TABLE Feed AUTO_INCREMENT = 1;
 
 
 -- The following fixtures are used to seed the database.
@@ -78,3 +84,32 @@ INSERT INTO PostVote (uid, pid, value) VALUES (2, 2, 1);
 
 -- dummy user(3) upvotes post 1
 INSERT INTO PostVote (uid, pid, value) VALUES (3, 1, 1);
+
+
+/*
+* Tag fixtures.
+*/
+Insert INTO Tag (tid, name) VALUES (1, 'blossom');
+Insert INTO Tag (tid, name) VALUES (2, 'bubbles');
+Insert INTO Tag (tid, name) VALUES (3, 'buttercup');
+
+/*
+* PostTags fixtures.
+*/
+-- post(1) has tags 1, 2, 3
+Insert INTO PostTags (pid, tid) VALUES (1, 1);
+Insert INTO PostTags (pid, tid) VALUES (1, 2);
+Insert INTO PostTags (pid, tid) VALUES (1, 3);
+
+-- post(2) has tags 1
+Insert INTO PostTags (pid, tid) VALUES (2, 1);
+
+/*
+* Feed fixtures.
+*/
+-- admin user(1) follows tag 1, 2, 3
+Insert INTO Feed (uid, tid) VALUES (1, 1);
+Insert INTO Feed (uid, tid) VALUES (1, 2);
+
+-- test user(2) follows tag 1
+Insert INTO Feed (uid, tid) VALUES (2, 1);
