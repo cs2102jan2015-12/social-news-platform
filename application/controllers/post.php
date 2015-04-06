@@ -33,8 +33,7 @@ class PostController extends Controller
     /**
      * 
      */
-    public function newpost()
-    {
+    public function newpost() {
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             $title = $_POST['title'];
@@ -52,6 +51,8 @@ class PostController extends Controller
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
+            } elseif (!filter_var($link, FILTER_VALIDATE_URL)) {
+                $message = "Please enter a valid link!";
             } else {
                 $response = $this->post->writePost($title, $content, $link, $submitted, $user, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
@@ -100,6 +101,8 @@ class PostController extends Controller
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
+            } elseif (!filter_var($link, FILTER_VALIDATE_URL)) {
+                $message = "Please enter a valid link!";
             } else {
                 $response = $this->post->editPost($pid, $title, $content, $link, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
