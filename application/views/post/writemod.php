@@ -5,7 +5,7 @@
         <?php if (array_key_exists('user', $_SESSION)) { ?>
     <h2>Edit the post</h2>
     
-    <form action="<?php echo $pid ?> " method="POST">
+    <form action="<?php echo $pid ?>" method="POST">
         <div>
             <span>Title</span>
             <input value="<?php echo $title; ?>" type="text" name="title">

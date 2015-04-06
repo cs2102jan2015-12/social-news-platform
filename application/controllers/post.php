@@ -47,6 +47,10 @@ class PostController extends Controller
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
+            } elseif (strlen($content) > 2147483647) {
+                $message = 'The content is too long!';
+            } elseif (strlen($title) > 255) {
+                $message = 'The title is too long!';
             } else {
                 $response = $this->post->writePost($title, $content, $submitted, $user, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
@@ -89,6 +93,10 @@ class PostController extends Controller
             
             if(empty($title) || empty($content)) {
                 $message = 'Title and content cannot be empty!';
+            } elseif (strlen($content) > 2147483647) {
+                $message = 'The content is too long!';
+            } elseif (strlen($title) > 255) {
+                $message = 'The title is too long!';
             } else {
                 $response = $this->post->editPost($pid, $title, $content, $tags);
                 header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $response);
