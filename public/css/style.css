@@ -1,0 +1,12 @@
+.vote-panel {
+    
+}
+
+.vote-panel a {
+    text-decoration: none;
+    color: gray;
+}
+
+.vote-panel a.active {
+    color: pink;
+}
