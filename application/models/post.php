@@ -166,8 +166,9 @@ class Post
      * 
      * @return title, content submitted author
      */
+
     public function getPostInformation($pid) {
-        $sql = "SELECT p.title AS title, p.content AS content, p.submitted AS submitted, u.username AS author  
+        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, u.username AS author, p.submitted AS submitted
                 FROM Post p, User u 
                 WHERE p.pid = :pid 
                 AND u.uid = p.author";
@@ -211,7 +212,7 @@ class Post
      */
     public function getAllPosts()
     {
-        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS username, p.submitted AS submitted
+        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS author, p.submitted AS submitted
             FROM Post p, User u
             WHERE p.author = u.uid AND
             p.hidden = 0
@@ -233,7 +234,7 @@ class Post
      */
     public function getPosts($tag_name)
     {
-        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS username, p.submitted AS submitted
+        $sql = "SELECT p.pid AS pid, p.title AS title, u.username AS author, p.submitted AS submitted
             FROM Post p, User u, PostTags pt, Tag t
             WHERE p.author = u.uid AND
             p.hidden = 0 AND

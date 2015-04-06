@@ -8,6 +8,9 @@
         <?php $post = $this->post->getPostInformation($pid);
         $tags = $this->post->getTagsOfPost($pid);
         if ($post): ?>
+        <?php
+    require APP . 'views/post/post.php';
+?>
             <div class="vote-panel">
                 <a class="upvote <?php if ($this->vote->getVotesOfPostBy($pid, $_SESSION['user']['uid'])->value > 0) { echo 'active'; } ?>"
                 href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $pid ?>/upvote">&#x25B2;</a>
@@ -43,11 +46,10 @@
             <?php if (array_key_exists('user', $_SESSION)): ?>
                 <h3>Post Comment</h3>
                 <form action="" id="cmtform" method="POST">
-                <div>
-                    <textarea style=" width:100%; max-width: 100%; min-width: 100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
-                </div>
-        
-                <input type="submit" value="Send">
+                    <div>
+                        <textarea style=" width:100%; max-width: 100%; min-width: 100%" name="comment" form="cmtform" placeholder = "Write here..."></textarea>
+                    </div>
+                    <input type="submit" value="Send">
                 </form>
     
             <?php else: ?>
