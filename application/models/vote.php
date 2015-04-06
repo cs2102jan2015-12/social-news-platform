@@ -44,11 +44,25 @@ class Vote
     public function downvotePost($pid, $uid, $value = -1) {
         return $this->upvotePost($pid, $uid, $value); // Technically it's a negative upvote.
     }
+    
+    /**
+     * Reset the vote of the user on a post.
+     * 
+     * @param int $pid
+     * @param int $uid
+     * $param int $value = 0
+     * 
+     * @return int : Sum of votes on post.
+     */
+    public function unvotePost($pid, $uid, $value = 0) {
+        return $this->upvotePost($pid, $uid, $value);
+    }
      
     /**
      * Get votes of a post.
      * 
-     * @param int $pID
+     * @param int $pid
+     * @param int $uid = null
      * 
      * @return int : Sum of votes on post.
      */
@@ -59,6 +73,23 @@ class Vote
         
         $sum = $query->fetch();
         return $sum;
+    }
+    
+    /**
+     * Get votes on a post by a user.
+     * 
+     * @param int $pid
+     * @param int $uid
+     * 
+     * @return int : Value of vote.
+     */
+    public function getVotesOfPostBy($pid, $uid) {
+        $sql = "SELECT SUM(value) AS value FROM PostVote WHERE pid = :pid AND uid = :uid";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':pid' => $pid, ':uid' => $uid));
+        
+        $votes = $query->fetch();
+        return $votes;
     }
      
     /**
@@ -93,9 +124,22 @@ class Vote
     }
     
     /**
+     * Reset the vote of the user on a post.
+     * 
+     * @param int $cid
+     * @param int $uid
+     * $param int $value = 0
+     * 
+     * @return int : Sum of votes on post.
+     */
+    public function unvoteComment($cid, $uid, $value = 0) {
+        return $this->upvoteComment($cid, $uid, $value);
+    }
+    
+    /**
      * Get votes of a comment.
      * 
-     * @param int $pID
+     * @param int $cid
      * 
      * @return int : Sum of votes on comment.
      */
@@ -106,5 +150,22 @@ class Vote
         
         $sum = $query->fetch();
         return $sum;
+    }
+    
+    /**
+     * Get votes on a comment by a user.
+     * 
+     * @param int $cid
+     * @param int $uid
+     * 
+     * @return int : Value of vote.
+     */
+    public function getVotesOfCommentBy($cid, $uid) {
+        $sql = "SELECT SUM(value) AS value FROM CommentVote WHERE cid = :cid AND uid = :uid";
+        $query = $this->db->prepare($sql);
+        $query->execute(array(':cid' => $cid, ':uid' => $uid));
+        
+        $votes = $query->fetch();
+        return $votes;
     }
 }

@@ -22,8 +22,9 @@ class PostController extends Controller
             $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
             header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
        }
-        
-        $this->pid = $pid;
+
+        $post = $this->post->getPostInformation($pid);
+
         require APP . 'views/_templates/header.php';
         require APP . 'views/post/indiv_post.php';
         require APP . 'views/_templates/footer.php';
@@ -126,6 +127,10 @@ class PostController extends Controller
         require APP . '/models/comment.php';
         // create new "model" (and pass the database connection)
         $this->comment = new Comment($this->db);
+        
+        // Load votes model to count votes on template load.
+        require APP . '/models/vote.php';
+        $this->vote = new Vote($this->db);
     }
     
     

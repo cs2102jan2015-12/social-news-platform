@@ -24,7 +24,9 @@ class VotesController extends Controller {
      *   e.g. votes/post/1/upvote
      * 
      * @return JSON
-     *  { votes: int }
+     *  { votes: int,
+     *    action: string [upvote|downvote]
+     *  }
      */
     public function post($pid, $action = null) {
         if (!isset($pid)) {
@@ -38,10 +40,21 @@ class VotesController extends Controller {
                 exit(); return;
             }
             
-            if ($action === 'upvote') {
-                $result = $this->vote->upvotePost($pid, $_SESSION['user']['uid']);
-            } else if ($action === 'downvote') {
-                $result = $this->vote->downvotePost($pid, $_SESSION['user']['uid']);
+            $uid = $_SESSION['user']['uid'];
+            
+            $currentVote = $this->vote->getVotesOfPostBy($pid, $uid)->value;
+            
+            if (($action === 'upvote' && $currentVote > 0)
+                || ($action === 'downvote' && $currentVote < 0)) // If unvoting...
+            {
+                $result = $this->vote->unvotePost($pid, $uid);
+                $result->action = 'unvote';
+            } else if ($action === 'upvote') { // If upvoting...
+                $result = $this->vote->upvotePost($pid, $uid);
+                $result->action = 'upvote';
+            } else if ($action === 'downvote') { // If downvoting...
+                $result = $this->vote->downvotePost($pid, $uid);
+                $result->action = 'downvote';
             }
         }
         

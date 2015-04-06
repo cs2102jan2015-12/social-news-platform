@@ -1,40 +1,13 @@
 <?php if (!$this) { exit(header('HTTP/1.0 403 Forbidden')); } ?>
 
-<div class="container-post">
+<?php
+    require APP . 'views/post/post.php';
+?>
 
-   <?php
-        $pid = $this->pid;
-        if (!empty($pid)) {
-        
-            $post = $this->post->getPostInformation($pid);
-                
-            if ($post) {
-                
-                echo "<h2>" . $post->title . "</h2>";
-                ?>
-                
-                <div class="container-content">
-                    <p><h3><?php echo $post->content ?></h3></p>
-                    <p align = "right">Authored by <font color="orange"><?php echo $post->author; ?></font></p>
-                    <p align = "right">Submitted on <font color="green"><?php echo $post->submitted; ?></font></p>
-                    
-                </div>
-                <?php
-                
-            } else {
-                echo "<h2>Post does not exist! </h2>";
-            }
-            
-        } else {
-            echo "<h2> Empty post number. </h2>";
-        }
-        
-    ?>
-</div>
 <div class = "container-newcomment">
     <?php
     
-    if (!empty($pid)) {
+    if (!empty($post->pid)) {
         if (array_key_exists('user', $_SESSION)) { ?>
             <h3>Post Comment</h3>
             <form action="" id="cmtform" method="POST">
@@ -58,8 +31,8 @@
 <div class = "container-comments">
    <?php
         
-        if (!empty($pid)) {
-            $postID = $pid;
+        if (!empty($post->pid)) {
+            $postID = $post->pid;
         
             $comment_list = $this->comment->getAllCommentsOfPost($postID);
                 
