@@ -24,10 +24,16 @@ class PostController extends Controller
                 }
             }
             
-            $this->pid = $pid;
-            require APP . 'views/_templates/header.php';
-            require APP . 'views/post/indiv_post.php';
-            require APP . 'views/_templates/footer.php';
+            $post = $this->post->getPostInformation($pid);
+            if ($post) {
+                $tags = $this->post->getTagsOfPost($pid);
+                $comment_list = $this->comment->getAllCommentsOfPost($pid);
+                require APP . 'views/_templates/header.php';
+                require APP . 'views/post/indiv_post.php';
+                require APP . 'views/_templates/footer.php';
+            } else {
+                header('location: ' . URL_WITH_INDEX_FILE . 'home/');
+            }
         } else {
             header('location: ' . URL_WITH_INDEX_FILE . 'feed/');
         }

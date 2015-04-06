@@ -48,6 +48,21 @@ class Comment
         $query->execute(array(':cid' => $cid, ':content' => $newContent));
         
     }
+    /**
+     * Get parent post. 
+     * 
+     * @param int $cid cid
+     * @return pid $pid
+     */
+    public function getParent($cid) {
+        $sql = "SELECT c.parent 
+                FROM Comment c 
+                WHERE c.cid = :cid;";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':cid' => $cid);
+        $query->execute($parameters);
+        return $query->fetch();
+    }
     
     /**
      * Hide comment. (For users, it will be displayed as "delete" function)
@@ -59,6 +74,7 @@ class Comment
         $query = $this->db->prepare($sql);
         $parameters = array(':cid' => $cid);
         $query->execute($parameters);
+        
     }
     
     /**
@@ -97,7 +113,7 @@ class Comment
      * 
      */
     public function getAllCommentsOfPost($pid) {
-        $sql = "SELECT c.cid AS cid, c.content AS content, c.submitted AS submitted, u.username AS author
+        $sql = "SELECT c.cid AS cid, c.content AS content, c.submitted AS submitted, u.username AS author, u.uid AS uid
                 FROM Comment c, User u
                 WHERE c.hidden = 0 
                 AND c.parent = :pid

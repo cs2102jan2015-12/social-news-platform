@@ -168,7 +168,7 @@ class Post
      */
 
     public function getPostInformation($pid) {
-        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, u.username AS author, p.submitted AS submitted
+        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, u.uid as uid, u.username AS author, p.submitted AS submitted
                 FROM Post p, User u 
                 WHERE p.pid = :pid 
                 AND u.uid = p.author";

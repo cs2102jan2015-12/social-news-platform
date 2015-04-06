@@ -9,7 +9,7 @@
            href="<?php echo URL_WITH_INDEX_FILE; ?>votes/post/<?php echo $post->pid ?>/downvote">&#x25BC;</a>
     </div>
     <div class="container-content" style="display: inline-block">
-        <?php echo $post->title; ?><br>
+        <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/<?php echo $post->pid ?>"><?php echo $post->title; ?></a><br>
         submitted by <font color="orange"><?php echo $post->author; ?></font> on <font color="green"><?php echo $post->submitted; ?></font>
     </div>
 </div>
