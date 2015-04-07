@@ -20,7 +20,8 @@
             <input placeholder="tag name" type="text" name="tag">
             <input type="submit" value="Add tag">
         </div>
-        <?php if(isset($message)) { echo $message;} ?>
+        <br>
+        <font color="orange"><?php if(isset($message)) { echo $message;} ?></font>
         
     </form>
     <hr>

@@ -42,9 +42,9 @@ class FeedController extends Controller
                  
                 $tag = trim($_POST['tag']);
                 
-                if (empty($tag)) {
+                if (empty($tag) || ($tag === "+")) {
                     
-                    $message = 'Tag to subscribe cannot be empty!';
+                    $message = 'Tag invalid!';
                     
                 } else {
                     $this->feeds->subscribe($tag);
