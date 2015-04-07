@@ -34,9 +34,8 @@ class FeedController extends Controller
         require APP . 'views/_templates/footer.php';
     }
     
-    public function manage($uid) {
-       
-        if ($_SESSION['user']['uid'] === $uid) {
+    public function manage() {
+       if (array_key_exists('user', $_SESSION)) {
             
             if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
                  
@@ -48,7 +47,7 @@ class FeedController extends Controller
                     
                 } else {
                     $this->feeds->subscribe($tag);
-                    header('location: ' . URL_WITH_INDEX_FILE . "feed/manage/" . $uid);
+                    header('location: ' . URL_WITH_INDEX_FILE . "feed/manage");
                 }
             }
             
@@ -67,7 +66,7 @@ class FeedController extends Controller
     
     public function unsubscribe($tag) {
         $this->feeds->unsubscribe($tag);
-        header('location: ' . URL_WITH_INDEX_FILE . "feed/manage/" . $_SESSION['user']['uid']);
+        header('location: ' . URL_WITH_INDEX_FILE . "feed/manage");
     }
     
     /**
