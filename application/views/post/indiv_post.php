@@ -7,6 +7,9 @@
                 require APP . 'views/post/post.php';
             ?>
             <p><h3><?php echo $post->content ?></h3></p>
+            <?php if ($post->link): ?>
+                <p><h4><a href="<?php echo $post->link ?>">PostLink</a>&nbsp;</h4></p>
+            <?php endif; ?>
                 
             <?php if ($tags): ?>
                 <p align = 'left'>

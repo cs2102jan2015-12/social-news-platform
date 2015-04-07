@@ -48,8 +48,8 @@ INSERT INTO User (username, hash)
 * Post fixtures.
 */
 
-INSERT INTO Post (title, content, submitted, author)
-VALUES ("Monster", "I'm just a man with a candle to guide me.", '2015-03-29 18:12:53', 1);
+INSERT INTO Post (title, content, link, submitted, author)
+VALUES ("Monster", "I'm just a man with a candle to guide me.", 'https://www.youtube.com/watch?v=VTNjuBjtlpA', '2015-03-29 18:12:53', 1);
 INSERT INTO Post (title, content, submitted, author)
 VALUES ("My Little Musings", "I believe there is a God, but I'm not sure he believes in us.", '2015-03-30 15:17:22', 2);
 
