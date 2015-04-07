@@ -19,7 +19,8 @@ class PostController extends Controller
         if ($pid !== null) {
             if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
                 if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
-                    $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
+                    $comment = htmlentities(rtrim($_POST['comment']));
+                    $user = $this->comment->addComment($comment, $_SESSION['user']['uid'], $pid);
                     header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
                 }
             }
@@ -42,11 +43,11 @@ class PostController extends Controller
     public function newpost()
     {
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-            $title = $_POST['title'];
-            $content = $_POST['content'];
+            $title = htmlentities($_POST['title']);
+            $content = htmlentities(rtrim($_POST['content']));
             $link = trim($_POST['link']);
             $user = $_SESSION['user']['uid'];
-            $tags = explode(",", $_POST['tags']);
+            $tags = explode(",", htmlentities($_POST['tags']));
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             $submitted = date('Y-m-d H:i:s');
@@ -94,10 +95,10 @@ class PostController extends Controller
         
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             
-            $title = $_POST['title'];
-            $content = $_POST['content'];
+            $title = htmlentities($_POST['title']);
+            $content = htmlentities(rtrim($_POST['content']));
             $link = trim($_POST['link']);
-            $tags = explode(",", $_POST['tags']);
+            $tags = explode(",", htmlentities($_POST['tags']));
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             

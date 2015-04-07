@@ -10,6 +10,6 @@
     </div>
     <div class="container-content" style="display: inline-block">
         <font color="orange"><?php echo $comment->author; ?></font> on <font color="green"><?php echo $comment->submitted; ?></font>
-        <p><h4><?php echo $comment->content ?></h4></p>
+        <p><h4><?php echo nl2br($comment->content) ?></h4></p>
     </div>
 </div>

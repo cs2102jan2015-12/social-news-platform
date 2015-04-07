@@ -19,7 +19,8 @@ class CommentController extends Controller
         $pid = $this->comment->getParent($cid);
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
                 if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
-                    $user = $this->comment->editComment($cid, $_POST['comment']);
+                    $comment = htmlentities(rtrim($_POST['comment']));
+                    $this->comment->editComment($cid, $comment);
                     header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid->parent);
                 }
             }
@@ -32,7 +33,7 @@ class CommentController extends Controller
     
     public function delete($cid)
     {
-        $this->comment->hidePost($cid);
+        $this->comment->hideComment($cid);
         $pid = $this->comment->getParent($cid);
         header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid->parent);
     }

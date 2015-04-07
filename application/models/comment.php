@@ -96,7 +96,7 @@ class Comment
      * 
      * @param int $cid cid
      */
-     public function deletePost($cid) {
+     public function deleteComment($cid) {
          $sql = "DELETE FROM Comment WHERE cid = :cid";
          $query = $this->db->prepare($sql);
          $parameters = array(':cid' => $cid);

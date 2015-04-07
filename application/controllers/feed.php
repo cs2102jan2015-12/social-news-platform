@@ -40,7 +40,7 @@ class FeedController extends Controller
             
             if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
                  
-                $tag = trim($_POST['tag']);
+                $tag = trim(htmlentities($_POST['tag']));
                 
                 if (empty($tag) || ($tag === "+")) {
                     
