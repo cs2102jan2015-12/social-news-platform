@@ -319,4 +319,33 @@ class Post
         $query->execute($parameters);
         return $query->fetch();
      }
+     
+     /**
+     * Get all reported posts.
+     */
+    public function getReportedPosts() {
+        $sql = "SELECT p.pid AS pid, p.title AS title, author.username AS author, p.submitted AS submitted,
+            reporter.username AS reporter, pr.submitted AS reportedTime
+            FROM Post AS p
+            INNER JOIN PostReport AS pr ON p.pid = pr.pid AND pr.reviewed = 0
+            INNER JOIN User AS reporter ON pr.uid = reporter.uid
+            INNER JOIN User AS author ON p.author = author.uid";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        // fetchAll() is the PDO method that gets all result rows, here in object-style because we defined this in
+        // core/controller.php! If you prefer to get an associative array as the result, then do
+        // $query->fetchAll(PDO::FETCH_ASSOC); or change core/controller.php's PDO options to
+        // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
+        return $query->fetchAll();
+    }
+    
+    /**
+     * Close the reports associated with this pid.
+     */
+    public function closeReport($pid) {
+        $sql = "UPDATE PostReport SET reviewed = 1 WHERE pid = :pid";
+        $query = $this->db->prepare($sql);
+        return $query->execute(array(':pid' => $pid));
+    }
 }

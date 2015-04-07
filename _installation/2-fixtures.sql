@@ -48,8 +48,6 @@ INSERT INTO User (username, hash)
 * Post fixtures.
 */
 
-DELETE FROM Post;
-ALTER TABLE Post AUTO_INCREMENT = 1; -- Safe to use because we deleted all rows.
 INSERT INTO Post (title, content, submitted, author)
 VALUES ("Monster", "I'm just a man with a candle to guide me.", '2015-03-29 18:12:53', 1);
 INSERT INTO Post (title, content, submitted, author)
@@ -113,3 +111,13 @@ Insert INTO Feed (uid, tid) VALUES (1, 2);
 
 -- test user(2) follows tag 1
 Insert INTO Feed (uid, tid) VALUES (2, 1);
+
+/**
+ * Report fixtures.
+ */
+ 
+-- dummy user(3) reports post 1
+INSERT INTO PostReport (uid, pid, submitted) VALUES (3, 1, '2015-04-01 10:16:23');
+
+-- dummy user(3) reports comment 4
+INSERT INTO CommentReport (uid, cid, submitted) VALUES (3, 4, '2015-04-01 23:47:02');
