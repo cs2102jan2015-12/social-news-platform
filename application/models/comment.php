@@ -160,23 +160,42 @@ class Comment
      }
      
      /**
-     * Check if you've already reported
+     * Check if you've already reported and still pending
      * 
      * @param uid
      * @param pid
      * 
      */
-     public function hasReport($uid, $cid) {
+     public function hasUnreviewedReport($uid, $cid) {
         $sql = "SELECT cid 
                 FROM CommentReport 
                 WHERE uid = :uid 
-                AND cid = :cid;";
+                AND cid = :cid
+                AND reviewed = 0;;";
         $query = $this->db->prepare($sql);
         $parameters = array(':cid' => $cid, ':uid' => $uid);
         $query->execute($parameters);
         return $query->fetch();
      }
-    
+     
+     /**
+     * Check if you've already reported and issue closed
+     * 
+     * @param uid
+     * @param pid
+     * 
+     */
+     public function hasReviewedReport($uid, $cid) {
+        $sql = "SELECT cid 
+                FROM CommentReport 
+                WHERE uid = :uid 
+                AND cid = :cid
+                AND reviewed = 1;";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':cid' => $cid, ':uid' => $uid);
+        $query->execute($parameters);
+        return $query->fetch();
+     }
     /**
      * Get all reported comments.
      */

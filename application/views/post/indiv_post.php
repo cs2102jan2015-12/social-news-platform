@@ -24,8 +24,10 @@
                     <?php if (($_SESSION['user']['uid'] === $post->uid) || ($_SESSION['user']['isAdmin'])) : ?>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/hide/<?php echo $pid; ?>">Delete</a>&nbsp;
                     <?php endif; ?>
-                    <?php if ($this->post->hasReport($_SESSION['user']['uid'], $pid)): ?>
+                    <?php if ($this->post->hasUnreviewedReport($_SESSION['user']['uid'], $pid)): ?>
                         <font color="blue">Reported!</font>&nbsp;
+                    <?php elseif ($this->post->hasReviewedReport($_SESSION['user']['uid'], $pid)): ?>
+                        <font color="gray">Report  closed.</font>&nbsp;
                     <?php else: ?>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/report/<?php echo $pid; ?>">Report</a>&nbsp;
                     <?php endif; ?>
@@ -42,20 +44,7 @@
                     </div>
                     <?php foreach($comment_list as $comment) { ?>
                         <?php $cid = $comment->cid; ?>
-                        <div class="container-post">
-                            <div class="vote-panel" style="display: inline-block; vertical-align: top">
-                                <a class="upvote <?php if ($this->vote->getVotesOfCommentBy($cid, $_SESSION['user']['uid'])->value > 0) { echo 'active'; } ?>"
-                                    href="<?php echo URL_WITH_INDEX_FILE; ?>votes/comment/<?php echo $cid?>/upvote">&#x25B2;</a>
-                                <div class="count"><?php echo $this->vote->getVotesOfComment($cid)->votes; ?></div>
-                                <a class="downvote <?php if ($this->vote->getVotesOfCommentBy($cid, $_SESSION['user']['uid'])->value < 0) { echo 'active'; } ?>"
-                                    href="<?php echo URL_WITH_INDEX_FILE; ?>votes/comment/<?php echo $cid ?>/downvote">&#x25BC;</a>
-                            </div>
-                            <div class="container-content" style="display: inline-block">
-                                
-                                <font color="orange"><?php echo $comment->author; ?></font> on <font color="green"><?php echo $comment->submitted; ?></font>
-                                <p><h4><?php echo $comment->content ?></h4></p>
-                            </div>
-                        </div>
+                        <?php require APP . 'views/comment/comment.php'; ?>
                         <div class = "container-manage-post">
                             <?php if (array_key_exists('user', $_SESSION)): ?>
                                 <p align = 'right'>
@@ -65,8 +54,10 @@
                                 <?php if (($_SESSION['user']['uid'] === $comment->uid) || ($_SESSION['user']['isAdmin'])): ?>
                                     <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/delete/<?php echo $cid; ?>">Delete</a>&nbsp;
                                 <?php endif; ?>
-                                <?php if ($this->comment->hasReport($_SESSION['user']['uid'], $cid)): ?>
+                                <?php if ($this->comment->hasUnreviewedReport($_SESSION['user']['uid'], $cid)): ?>
                                     <font color="blue">Reported!</font>&nbsp;
+                                <?php elseif ($this->comment->hasReviewedReport($_SESSION['user']['uid'], $cid)): ?>
+                                    <font color="gray">Report closed.</font>&nbsp;
                                 <?php else: ?>
                                     <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/report/<?php echo $cid; ?>">Report</a>&nbsp;
                                 <?php endif; ?>

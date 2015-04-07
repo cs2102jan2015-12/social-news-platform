@@ -303,17 +303,36 @@ class Post
      }
      
      /**
-     * Check if you've already reported
+     * Check if you've already reported and still pending
      * 
      * @param uid
      * @param pid
      * 
      */
-     public function hasReport($uid, $pid) {
+     public function hasUnreviewedReport($uid, $pid) {
         $sql = "SELECT pid 
                 FROM PostReport 
                 WHERE uid = :uid 
-                AND pid = :pid;";
+                AND pid = :pid
+                AND reviewed =0;";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pid' => $pid, ':uid' => $uid);
+        $query->execute($parameters);
+        return $query->fetch();
+     }
+     /**
+     * Check if you've already reported and issue closed
+     * 
+     * @param uid
+     * @param pid
+     * 
+     */
+     public function hasReviewedReport($uid, $pid) {
+        $sql = "SELECT pid 
+                FROM PostReport 
+                WHERE uid = :uid 
+                AND pid = :pid
+                AND reviewed = 1;";
         $query = $this->db->prepare($sql);
         $parameters = array(':pid' => $pid, ':uid' => $uid);
         $query->execute($parameters);

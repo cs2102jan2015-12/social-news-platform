@@ -18,13 +18,7 @@
     <div class="reported-comments">
         <h2>Reported Comments</h2>
         <?php foreach ($reportedComments as $comment) { ?>
-            <h4><?php echo $comment->author; ?></h4>
-                <div class="container-content">
-                    <p><h5><?php echo $comment->content ?></h5></p>
-                <!-- <p align = "right">Authored by <font color="orange"><?php //echo $comment->author; ?></font></p> -->
-                <p align = "right">Submitted on <font color="green"><?php echo $comment->submitted; ?></font></p>
-                
-            </div>
+            <?php require APP . 'views/comment/comment.php'; ?>
             <span>Reported by <?php echo $comment->reporter; ?> on <?php echo $comment->reportedTime ?></span>
             <form action="<?php echo URL_WITH_INDEX_FILE; ?>admin/hide/comment/<?php echo $comment->cid; ?>" method="POST">
                 <input type="submit" value="Hide & Close">
