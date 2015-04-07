@@ -181,7 +181,7 @@ class Post
      * @return title, content submitted author
      */
 
-    public function getPostInformation($pID) {
+    public function getPostInformation($pid) {
         $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.link AS link, u.username AS author, p.submitted AS submitted
 
                 FROM Post p, User u 
