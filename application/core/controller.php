@@ -47,10 +47,6 @@ class Controller
      */
     public function loadModel()
     {
-        // TODO: Remove song model.
-        // This is currently so just to ensure that the example model/controller still works.
-        require APP . '/models/song.php'; 
-        // create new "model" (and pass the database connection)
-        $this->model = new Song($this->db);
+   
     }
 }
