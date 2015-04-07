@@ -26,7 +26,7 @@ class RegisterController extends Controller
 
                 // Ensure session is written before redirecting.
                 session_write_close();
-                header('location: ' . URL_WITH_INDEX_FILE . 'register/complete');
+                header('location: ' . URL_WITH_INDEX_FILE);
             }
 
             // Invalid user registration:
@@ -45,12 +45,6 @@ class RegisterController extends Controller
             require APP . 'views/register/index.php';
             require APP . 'views/_templates/footer.php';
         }
-    }
-    
-    public function complete() {
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/register/complete.php';
-        require APP . 'views/_templates/footer.php';
     }
     
     /**
