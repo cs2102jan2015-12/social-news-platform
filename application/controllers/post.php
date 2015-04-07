@@ -44,7 +44,7 @@ class PostController extends Controller
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             $title = $_POST['title'];
             $content = $_POST['content'];
-            $link = $_POST['link'];
+            $link = trim($_POST['link']);
             $user = $_SESSION['user']['uid'];
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
@@ -57,7 +57,7 @@ class PostController extends Controller
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
-            } elseif (!filter_var($link, FILTER_VALIDATE_URL)) {
+            } elseif (!filter_var($link, FILTER_VALIDATE_URL) && !empty($link)) {
                 $message = "Please enter a valid link!";
             } else {
                 $response = $this->post->writePost($title, $content, $link, $submitted, $user, $tags);
@@ -96,7 +96,7 @@ class PostController extends Controller
             
             $title = $_POST['title'];
             $content = $_POST['content'];
-            $link = $_POST['link'];
+            $link = trim($_POST['link']);
             $tags = explode(",", $_POST['tags']);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
@@ -107,7 +107,7 @@ class PostController extends Controller
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
-            } elseif (!filter_var($link, FILTER_VALIDATE_URL)) {
+            } elseif (!filter_var($link, FILTER_VALIDATE_URL) && !empty($link)) {
                 $message = "Please enter a valid link!";
             } else {
                 $response = $this->post->editPost($pid, $title, $content, $link, $tags);
@@ -125,15 +125,23 @@ class PostController extends Controller
 
     public function delete($pid) {
         $this->post->deletePost($pid);
+        header('location: ' . URL_WITH_INDEX_FILE . 'home');
         
     }
     
     public function hide($pid) {
         $this->post->hidePost($pid);
+        header('location: ' . URL_WITH_INDEX_FILE . 'home');
     }
     
     public function unhide($pid) {
         $this->post->unhidePost($pid);
+        header('location: ' . URL_WITH_INDEX_FILE . 'home');
+    }
+    
+    public function report($pid) {
+        $this->post->reportPost($_SESSION['user']['uid'], $pid);
+        header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
     }
 
     /**

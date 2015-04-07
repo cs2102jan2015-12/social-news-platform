@@ -19,12 +19,16 @@
                 <?php if (array_key_exists('user', $_SESSION)): ?>
                 <p align = 'right'>
                     <?php if ($_SESSION['user']['uid'] === $post->uid): ?>
-                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/edit/<?php echo $pid; ?>">Edit</a>&nbsp;    
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/editpost/<?php echo $pid; ?>">Edit</a>&nbsp;    
                     <?php endif; ?>
                     <?php if (($_SESSION['user']['uid'] === $post->uid) || ($_SESSION['user']['isAdmin'])) : ?>
-                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/delete/<?php echo $pid; ?>">Delete</a>&nbsp;
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/hide/<?php echo $pid; ?>">Delete</a>&nbsp;
                     <?php endif; ?>
-                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/report/<?php echo $pid; ?>">Report</a>&nbsp;
+                    <?php if ($this->post->hasReport($_SESSION['user']['uid'], $pid)): ?>
+                        <font color="blue">Reported!</font>&nbsp;
+                    <?php else: ?>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/report/<?php echo $pid; ?>">Report</a>&nbsp;
+                    <?php endif; ?>
                 <?php endif; ?>                    
             </div>
             <hr>
@@ -54,14 +58,18 @@
                         </div>
                         <div class = "container-manage-post">
                             <?php if (array_key_exists('user', $_SESSION)): ?>
-                            <p align = 'right'>
-                            <?php if ($_SESSION['user']['uid'] === $comment->uid): ?>
-                                <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/edit/<?php echo $cid; ?>">Edit</a>&nbsp;    
-                            <?php endif; ?>
-                            <?php if (($_SESSION['user']['uid'] === $comment->uid) || ($_SESSION['user']['isAdmin'])) : ?>
-                                <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/delete/<?php echo $cid; ?>">Delete</a>&nbsp;
-                            <?php endif; ?>
-                            <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/report/<?php echo $comment->uid; ?>">Report</a>&nbsp;
+                                <p align = 'right'>
+                                <?php if ($_SESSION['user']['uid'] === $comment->uid): ?>
+                                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/edit/<?php echo $cid; ?>">Edit</a>&nbsp;    
+                                <?php endif; ?>
+                                <?php if (($_SESSION['user']['uid'] === $comment->uid) || ($_SESSION['user']['isAdmin'])): ?>
+                                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/delete/<?php echo $cid; ?>">Delete</a>&nbsp;
+                                <?php endif; ?>
+                                <?php if ($this->comment->hasReport($_SESSION['user']['uid'], $cid)): ?>
+                                    <font color="blue">Reported!</font>&nbsp;
+                                <?php else: ?>
+                                    <a href="<?php echo URL_WITH_INDEX_FILE; ?>comment/report/<?php echo $cid; ?>">Report</a>&nbsp;
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                         <hr>

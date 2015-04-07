@@ -25,10 +25,16 @@ class Post
      * @param array $tags tags
      */
     public function writePost($title, $content, $link, $submitted, $uID, $tags) { // $tags is an array
-    
-        $sql = "INSERT INTO Post (title, content, link, submitted, author) VALUES (:title, :content, :link, :submitted, :author)";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':title' => $title, ':content' => $content, ':link' => $link, ':submitted' => $submitted, ':author' => $uID);
+        if (!empty($link)){
+            $sql = "INSERT INTO Post (title, content, link, submitted, author) VALUES (:title, :content, :link, :submitted, :author)";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':title' => $title, ':content' => $content, ':link' => $link, ':submitted' => $submitted, ':author' => $uID);
+        } else {
+            $sql = "INSERT INTO Post (title, content, submitted, author) VALUES (:title, :content, :submitted, :author)";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':title' => $title, ':content' => $content, ':submitted' => $submitted, ':author' => $uID);
+ 
+        }
         $successful = $query->execute($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
@@ -86,9 +92,15 @@ class Post
         $query = $this->db->prepare($sql);
         $success2 = $query->execute(array(':pID' => $pID, ':content' => $content));
         
-        $sql = "UPDATE Post SET link = :link WHERE pID = :pID";
+        $sql = "UPDATE Post SET link = NULL WHERE pID = :pID";
         $query = $this->db->prepare($sql);
-        $success3 = $query->execute(array(':pID' => $pID, ':link' => $link));
+        $query->execute(array(':pID' => $pID));
+        
+        if (!empty($link)){
+            $sql = "UPDATE Post SET link = :link WHERE pID = :pID";
+            $query = $this->db->prepare($sql);
+            $success3 = $query->execute(array(':pID' => $pID, ':link' => $link));
+        }
         
         // Remove all PostTags relations between this post and all the tags it has
         $sql = "DELETE FROM PostTags WHERE pID = :pID";
@@ -118,9 +130,12 @@ class Post
             $query->execute($parameters);
             
         }
+        if (!empty($link)){
+            $successful = $success1 && $success2 && $success3;
+        }  else {
+            $successful = $success1 && $success2;
+        }
         
-        $successful = $success1 && $success2 && $success3;
-            
         if ($successful > 0) { // If the query is successful...
             return $pID; // Return the post.
         }
@@ -182,7 +197,7 @@ class Post
      */
 
     public function getPostInformation($pid) {
-        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.link AS link, u.username AS author, p.submitted AS submitted
+        $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.link AS link, u.username AS author, u.uid AS uid, p.submitted AS submitted
 
                 FROM Post p, User u 
                 WHERE p.pid = :pid 
@@ -226,9 +241,7 @@ class Post
         // fetch() is the PDO method that get exactly one result
         return $query->fetchAll(); 
     }
-    
-    
-    
+  
     /**
      * Get all posts from database that are not hidden
      *
@@ -274,4 +287,36 @@ class Post
         // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
         return $query->fetchAll();
     }
+    
+    /**
+     * Reports the post
+     * 
+     * @param uid
+     * @param pid
+     * 
+     */
+     public function reportPost($uid, $pid) {
+        $sql = "INSERT INTO PostReport (uid, pid, submitted) VALUES (:uid, :pid, :submitted);";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pid' => $pid, ':uid' => $uid, ':submitted' => date('Y-m-d H:i:s'));
+        $query->execute($parameters);
+     }
+     
+     /**
+     * Check if you've already reported
+     * 
+     * @param uid
+     * @param pid
+     * 
+     */
+     public function hasReport($uid, $pid) {
+        $sql = "SELECT pid 
+                FROM PostReport 
+                WHERE uid = :uid 
+                AND pid = :pid;";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':pid' => $pid, ':uid' => $uid);
+        $query->execute($parameters);
+        return $query->fetch();
+     }
 }

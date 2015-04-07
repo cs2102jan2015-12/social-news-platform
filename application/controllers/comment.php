@@ -36,6 +36,11 @@ class CommentController extends Controller
         $pid = $this->comment->getParent($cid);
         header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid->parent);
     }
+    public function report($cid) {
+        $this->comment->reportComment($_SESSION['user']['uid'], $cid);
+        $pid = $this->comment->getParent($cid);
+        header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid->parent);
+    }
     
     /**
      * Overloaded loadModel() method. This method is called on __construct().

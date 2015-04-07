@@ -145,5 +145,36 @@ class Comment
         return $query->fetch(); 
 
     }
+    /**
+     * Reports the comment
+     * 
+     * @param uid
+     * @param cid
+     * 
+     */
+     public function reportComment($uid, $cid) {
+        $sql = "INSERT INTO CommentReport (uid, cid, submitted) VALUES (:uid, :cid, :submitted);";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':cid' => $cid, ':uid' => $uid, ':submitted' => date('Y-m-d H:i:s'));
+        $query->execute($parameters);
+     }
+     
+     /**
+     * Check if you've already reported
+     * 
+     * @param uid
+     * @param pid
+     * 
+     */
+     public function hasReport($uid, $cid) {
+        $sql = "SELECT cid 
+                FROM CommentReport 
+                WHERE uid = :uid 
+                AND cid = :cid;";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':cid' => $cid, ':uid' => $uid);
+        $query->execute($parameters);
+        return $query->fetch();
+     }
     
 }
