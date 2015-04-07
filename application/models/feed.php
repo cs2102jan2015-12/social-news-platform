@@ -37,4 +37,58 @@ class Feed
             return $query->fetchAll();
         }
     }
+    /**
+     * Remove feed from user (unsubscribe)
+     * @param tid tag id
+     */
+     public function unsubscribe($tag)
+     {
+         if (array_key_exists('user', $_SESSION)) {
+            $sql = "SELECT tid FROM Tag WHERE name = :tag";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':tag' => $tag);
+            $query->execute($parameters);
+            
+            $tid = $query->fetchColumn(0);
+            
+            $parameters = array(':uid' => $_SESSION['user']['uid'], ':tid' => $tid);
+            $sql = "DELETE FROM Feed WHERE tid = :tid AND uid = :uid;";
+            $query = $this->db->prepare($sql);
+            $query->execute($parameters);
+         }
+         
+     }
+     
+     /**
+     * Add feed to user (subscribe)
+     * @param tagname tag name
+     */
+     public function subscribe($tagname)
+     {
+         if (array_key_exists('user', $_SESSION)) {
+            
+             // if statement for checking whether the tag is a new one
+            $sql = "SELECT tid FROM Tag WHERE name = :tag";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':tag' => $tagname);
+            $query->execute($parameters);
+            
+            $tid = $query->fetchColumn(0);
+
+            if ($tid == false) { // tag is new, create new entry
+                $sql = "INSERT INTO Tag (name) VALUES (:tag)";
+                $query = $this->db->prepare($sql);
+                $parameters = array(':tag' => $tagname);
+                $query->execute($parameters);
+                $tid = $this->db->lastInsertId();
+            }
+            
+            //create Feed entity
+            $sql = "INSERT INTO Feed (uid, tid) VALUES (:uid, :tid);";
+            $query = $this->db->prepare($sql);
+            $parameters = array(':uid' => $_SESSION['user']['uid'], ':tid' => $tid);
+            $query->execute($parameters);
+         }
+         
+     }
 }

@@ -11,6 +11,7 @@
         <?php
           }
         ?>
+        <li><a href="<?php echo URL_WITH_INDEX_FILE; ?>feed/manage/<?php echo $_SESSION['user']['uid'] ?>">+</a></li>
       </ul>
     </nav>
   </div>

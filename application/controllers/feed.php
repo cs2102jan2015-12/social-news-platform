@@ -34,6 +34,42 @@ class FeedController extends Controller
         require APP . 'views/_templates/footer.php';
     }
     
+    public function manage($uid) {
+       
+        if ($_SESSION['user']['uid'] === $uid) {
+            
+            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+                 
+                $tag = trim($_POST['tag']);
+                
+                if (empty($tag)) {
+                    
+                    $message = 'Tag to subscribe cannot be empty!';
+                    
+                } else {
+                    $this->feeds->subscribe($tag);
+                    header('location: ' . URL_WITH_INDEX_FILE . "feed/manage/" . $uid);
+                }
+            }
+            
+            $feeds = $this->feeds->getAllFeeds();
+            // load views
+            require APP . 'views/_templates/header.php';
+            require APP . 'views/feed/feed-manager.php';
+            require APP . 'views/_templates/footer.php';
+        } else {
+            header('location: ' . URL_WITH_INDEX_FILE . 'feed');
+            
+        }
+        
+        
+    }
+    
+    public function unsubscribe($tag) {
+        $this->feeds->unsubscribe($tag);
+        header('location: ' . URL_WITH_INDEX_FILE . "feed/manage/" . $_SESSION['user']['uid']);
+    }
+    
     /**
      * Loads the "model".
      * @return object model
