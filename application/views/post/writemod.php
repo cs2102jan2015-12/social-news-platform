@@ -7,19 +7,19 @@
     
     <form action="<?php echo $pid ?>" method="POST">
         <div>
-            <span>Title<br></span>
+            <p>Title</p>
             <input value="<?php echo $title; ?>" type="text" name="title">
         </div>
         <div>
-            <span>Content<br></span>
+            <p>Content</p>
             <textarea name="content" rows="10" cols="50"><?php echo $content; ?></textarea>
         </div>
         <div>
-            <span>Tags<br></span>
+            <p>Tags</p>
             <input value="<?php echo $tagString ?>" type="text" name="tags">
         </div>
         <div>
-            <span>Link<br></span>
+            <p>Link</p>
             <input value="<?php echo $link ?>" type="text" name="link">
         </div>
         <input type="submit" value="Submit">
