@@ -39,9 +39,6 @@ if (!$this) {
                         <span class="navbar-text">Hello <?php echo $_SESSION['user']['username']; ?></span>
                     </li>
                     <li>
-                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
-                    </li>
-                    <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed">Feeds</a>
                     </li>
                     <li>
@@ -50,6 +47,13 @@ if (!$this) {
                         <?php if ($_SESSION['user']['isAdmin']) { ?>
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>admin">Admin</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
+                    </li>
+                        <?php } else { ?>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
                     </li>
                         <?php } ?>
                     <?php } else { ?>
