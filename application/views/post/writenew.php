@@ -7,19 +7,19 @@
     
     <form action="newpost" method="POST">
         <div>
-            <span>Title</span>
+            <p>Title</p>
             <input value="<?php if(isset($message)) { echo $_POST['title'];} ?>" type="text" name="title">
         </div>
         <div>
-            <span>Content</span>
+            <p>Content</p>
             <textarea name="content" rows="10" cols="50"><?php if(isset($message)) { echo $_POST['content'];}?></textarea>
         </div>
         <div>
-            <span>Tags</span>
+            <p>Tag</p>
             <input value="<?php if(isset($message)) { echo $_POST['tags'];} ?>" type="text" name="tags">
         </div>
         <div>
-            <span>Link</span>
+            <p>Link</p>
             <input value="<?php if(isset($message)) { echo $_POST['link'];} ?>" type="text" name="link">
         </div>
         <input type="submit" value="Submit">
