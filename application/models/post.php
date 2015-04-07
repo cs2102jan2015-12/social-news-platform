@@ -180,13 +180,15 @@ class Post
      * 
      * @return title, content submitted author
      */
+
     public function getPostInformation($pID) {
         $sql = "SELECT p.pid AS pid, p.title AS title, p.content AS content, p.link AS link, u.username AS author, p.submitted AS submitted
+
                 FROM Post p, User u 
-                WHERE p.pID = :pID 
+                WHERE p.pid = :pid 
                 AND u.uid = p.author";
         $query = $this->db->prepare($sql); 
-        $parameters = array(':pID' => $pID);
+        $parameters = array(':pid' => $pid);
         
         $query->execute($parameters);
          
@@ -201,6 +203,31 @@ class Post
         $query->execute($parameters);
         return $query->fetchAll();
     }
+    
+    /**
+     * Get tags from post using postid
+     * 
+     * @param pid
+     * 
+     * return tags for that post
+     * 
+    */
+    public function getTagsOfPost($pid) {
+         $sql = "SELECT t.tid AS tid, t.name AS tagname 
+                FROM Post p, Tag t, PostTags pt 
+                WHERE p.pid = :pid
+                AND p.pid = pt.pid
+                AND t.tid = pt.tid";
+        $query = $this->db->prepare($sql); 
+        $parameters = array(':pid' => $pid);
+        
+        $query->execute($parameters);
+         
+        // fetch() is the PDO method that get exactly one result
+        return $query->fetchAll(); 
+    }
+    
+    
     
     /**
      * Get all posts from database that are not hidden

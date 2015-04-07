@@ -14,27 +14,33 @@ class PostController extends Controller
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/post/index (which is the default page btw)
      */
-    public function index($pid)
+    public function index($pid = null)
     {
-        
-       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
-           if (isset($_POST['comment']) && trim($_POST['comment']) !=='')
-            $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
-            header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
-       }
-
-        $post = $this->post->getPostInformation($pid);
-
-        require APP . 'views/_templates/header.php';
-        require APP . 'views/post/indiv_post.php';
-        require APP . 'views/_templates/footer.php';
+        if ($pid !== null) {
+            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+                if (isset($_POST['comment']) && trim($_POST['comment']) !=='') {
+                    $user = $this->comment->addComment($_POST['comment'], $_SESSION['user']['uid'], $pid);
+                    header('location: ' . URL_WITH_INDEX_FILE . 'post/' . $pid);
+                }
+            }
+            
+            $post = $this->post->getPostInformation($pid);
+            if ($post) {
+                $tags = $this->post->getTagsOfPost($pid);
+                $comment_list = $this->comment->getAllCommentsOfPost($pid);
+                require APP . 'views/_templates/header.php';
+                require APP . 'views/post/indiv_post.php';
+                require APP . 'views/_templates/footer.php';
+            } else {
+                header('location: ' . URL_WITH_INDEX_FILE . 'home/');
+            }
+        } else {
+            header('location: ' . URL_WITH_INDEX_FILE . 'feed/');
+        }
     }
-    
-    /**
-     * 
-     */
-    public function newpost() {
-        
+
+    public function newpost()
+    {
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
             $title = $_POST['title'];
             $content = $_POST['content'];
@@ -116,7 +122,7 @@ class PostController extends Controller
         require APP . 'views/_templates/footer.php';
         
     }
-    
+
     public function delete($pid) {
         $this->post->deletePost($pid);
         
@@ -129,7 +135,7 @@ class PostController extends Controller
     public function unhide($pid) {
         $this->post->unhidePost($pid);
     }
-    
+
     /**
      * Overloaded loadModel() method. This method is called on __construct().
      */

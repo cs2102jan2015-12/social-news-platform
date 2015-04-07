@@ -97,10 +97,21 @@ class VotesController extends Controller {
                 exit(); return;
             }
             
-            if ($action === 'upvote') {
-                $result = $this->vote->upvoteComment($cid, $_SESSION['user']['uid']);
+            $uid = $_SESSION['user']['uid'];
+            
+            $currentVote = $this->vote->getVotesOfCommentBy($cid, $uid)->value;
+            
+            if (($action === 'upvote' && $currentVote > 0)
+                || ($action === 'downvote' && $currentVote < 0)) // If unvoting...
+            {
+                $result = $this->vote->unvoteComment($cid, $uid);
+                $result->action = 'unvote';
+            } else if ($action === 'upvote') {
+                $result = $this->vote->upvoteComment($cid, $uid);
+                $result->action = 'upvote';
             } else if ($action === 'downvote') {
-                $result = $this->vote->downvoteComment($cid, $_SESSION['user']['uid']);
+                $result = $this->vote->downvoteComment($cid, $uid);
+                $result->action = 'downvote';
             }
         }
         
