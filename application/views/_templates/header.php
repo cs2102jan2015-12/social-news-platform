@@ -41,6 +41,12 @@ if (!$this) {
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/logout">Logout</a>
                     </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed">Feeds</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/newpost">New Post</a>
+                    </li>
                         <?php if ($_SESSION['user']['isAdmin']) { ?>
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>admin">Admin</a>
@@ -52,6 +58,9 @@ if (!$this) {
                     </li>
                     <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>auth/login">Login</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed">Feeds</a>
                     </li>
                     <?php } ?>
                 </ul>
