@@ -91,7 +91,8 @@ class PostController extends Controller
             $title = $_POST['title'];
             $content = $_POST['content'];
             $link = $_POST['link'];
-            $tags = explode(",", $_POST['tags']);
+            $tagString = $_POST['tags'];
+            $tags = explode(",", $tagString);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             
