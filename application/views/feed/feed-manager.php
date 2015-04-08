@@ -2,8 +2,8 @@
 
 <div class="container">
   <div class="feeds">
-    <h3> Manage your feed subscription </h3>
-    <p> Click on tags to unsubscribe to them.</p>
+    <h3> Manage Feeds</h3>
+    <p>Unfollow tags by clicking them.</p>
       <ul class="pagination">
         <?php
           foreach ($feeds as $feed) {
@@ -13,7 +13,7 @@
           }
         ?>
       </ul>
-    <p> Subscribe to a tag (one tag at a time) </p>
+    <p>Follow tags, one at a time.</p>
      <form action="" method="POST">
         <div>
             <span>Tag</span>
