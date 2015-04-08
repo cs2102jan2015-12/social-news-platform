@@ -67,7 +67,7 @@ class Vote
      * @return int : Sum of votes on post.
      */
     public function getVotesOfPost($pid, $uid = null) {
-        $sql = "SELECT SUM(value) AS votes FROM PostVote WHERE pid = :pid";
+        $sql = "SELECT IFNULL(SUM(value), 0) AS votes FROM PostVote WHERE pid = :pid";
         $query = $this->db->prepare($sql);
         $query->execute(array(':pid' => $pid));
         
@@ -84,7 +84,7 @@ class Vote
      * @return int : Value of vote.
      */
     public function getVotesOfPostBy($pid, $uid) {
-        $sql = "SELECT SUM(value) AS value FROM PostVote WHERE pid = :pid AND uid = :uid";
+        $sql = "SELECT IFNULL(SUM(value), 0) AS value FROM PostVote WHERE pid = :pid AND uid = :uid";
         $query = $this->db->prepare($sql);
         $query->execute(array(':pid' => $pid, ':uid' => $uid));
         
@@ -144,7 +144,7 @@ class Vote
      * @return int : Sum of votes on comment.
      */
     public function getVotesOfComment($cid, $uid = null) {
-        $sql = "SELECT SUM(value) AS votes FROM CommentVote WHERE cid = :cid";
+        $sql = "SELECT IFNULL(SUM(value), 0) AS votes FROM CommentVote WHERE cid = :cid";
         $query = $this->db->prepare($sql);
         $query->execute(array(':cid' => $cid));
         
@@ -161,7 +161,7 @@ class Vote
      * @return int : Value of vote.
      */
     public function getVotesOfCommentBy($cid, $uid) {
-        $sql = "SELECT SUM(value) AS value FROM CommentVote WHERE cid = :cid AND uid = :uid";
+        $sql = "SELECT IFNULL(SUM(value), 0) AS value FROM CommentVote WHERE cid = :cid AND uid = :uid";
         $query = $this->db->prepare($sql);
         $query->execute(array(':cid' => $cid, ':uid' => $uid));
         
