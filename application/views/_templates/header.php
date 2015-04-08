@@ -42,6 +42,9 @@ if (!$this) {
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed">Feeds</a>
                     </li>
                     <li>
+                        <a href="<?php echo URL_WITH_INDEX_FILE; ?>feed/manage">Manage Feeds</a>
+                    </li>
+                    <li>
                         <a href="<?php echo URL_WITH_INDEX_FILE; ?>post/newpost">New Post</a>
                     </li>
                         <?php if ($_SESSION['user']['isAdmin']) { ?>
