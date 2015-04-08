@@ -252,7 +252,7 @@ class Post
             FROM Post p, User u
             WHERE p.author = u.uid AND
             p.hidden = 0
-            ORDER BY p.submitted";
+            ORDER BY p.submitted DESC";
         $query = $this->db->prepare($sql);
         $query->execute();
 
@@ -277,7 +277,7 @@ class Post
             p.pid = pt.pid AND
             pt.tid = t.tid AND
             t.name = :tag_name
-            ORDER BY p.submitted";
+            ORDER BY p.submitted DESC";
         $query = $this->db->prepare($sql);
         $query->execute(array(':tag_name' => $tag_name));
 
