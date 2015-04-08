@@ -8,7 +8,7 @@
         <?php
           foreach ($feeds as $feed) {
         ?>
-        <li><a href="<?php echo URL_WITH_INDEX_FILE; ?>feed/unsubscribe/<?php echo $feed->tag ?>"><?php echo $feed->tag ?></a></li>
+        <li><a href="<?php echo URL_WITH_INDEX_FILE; ?>feed/unsubscribe/<?php echo $feed->tid ?>"><?php echo $feed->tag ?></a></li>
         <?php
           }
         ?>

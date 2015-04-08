@@ -64,8 +64,8 @@ class FeedController extends Controller
         
     }
     
-    public function unsubscribe($tag) {
-        $this->feeds->unsubscribe($tag);
+    public function unsubscribe($tid) {
+        $this->feeds->unsubscribe($tid);
         header('location: ' . URL_WITH_INDEX_FILE . "feed/manage");
     }
     

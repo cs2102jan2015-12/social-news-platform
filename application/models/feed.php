@@ -21,7 +21,7 @@ class Feed
     {
         if (array_key_exists('user', $_SESSION)) {
             $parameters = array(':uid' => $_SESSION['user']['uid']);
-            $sql = "SELECT t.name AS tag
+            $sql = "SELECT t.name AS tag, t.tid AS tid
             FROM Tag t, Feed f, User u
             WHERE t.tid = f.tid
             AND f.uid = u.uid
@@ -41,12 +41,12 @@ class Feed
      * Remove feed from user (unsubscribe)
      * @param tid tag id
      */
-     public function unsubscribe($tag)
+     public function unsubscribe($tid)
      {
          if (array_key_exists('user', $_SESSION)) {
-            $sql = "SELECT tid FROM Tag WHERE name = :tag";
+            $sql = "SELECT tid FROM Tag WHERE tid = :tid";
             $query = $this->db->prepare($sql);
-            $parameters = array(':tag' => $tag);
+            $parameters = array(':tid' => $tid);
             $query->execute($parameters);
             
             $tid = $query->fetchColumn(0);
