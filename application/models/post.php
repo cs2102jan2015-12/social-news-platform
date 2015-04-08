@@ -35,6 +35,7 @@ class Post
             $parameters = array(':title' => $title, ':content' => $content, ':submitted' => $submitted, ':author' => $uID);
  
         }
+        
         $successful = $query->execute($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . debugPDO($sql, $parameters);  exit();
@@ -83,23 +84,14 @@ class Post
      */
     public function editPost($pID, $title, $content, $link, $tags) {
         
-        
-        $sql = "UPDATE Post SET title = :title WHERE pID = :pID";
+        $sql = "UPDATE Post SET title = :title, content = :content, link = NULL WHERE pID = :pID";
         $query = $this->db->prepare($sql);
-        $success1 = $query->execute(array(':pID' => $pID, ':title' => $title));
-        
-        $sql = "UPDATE Post SET content = :content WHERE pID = :pID";
-        $query = $this->db->prepare($sql);
-        $success2 = $query->execute(array(':pID' => $pID, ':content' => $content));
-        
-        $sql = "UPDATE Post SET link = NULL WHERE pID = :pID";
-        $query = $this->db->prepare($sql);
-        $query->execute(array(':pID' => $pID));
+        $success1 = $query->execute(array(':pID' => $pID, ':title' => $title, ':content' => $content));
         
         if (!empty($link)){
             $sql = "UPDATE Post SET link = :link WHERE pID = :pID";
             $query = $this->db->prepare($sql);
-            $success3 = $query->execute(array(':pID' => $pID, ':link' => $link));
+            $success2 = $query->execute(array(':pID' => $pID, ':link' => $link));
         }
         
         // Remove all PostTags relations between this post and all the tags it has
@@ -131,9 +123,9 @@ class Post
             
         }
         if (!empty($link)){
-            $successful = $success1 && $success2 && $success3;
-        }  else {
             $successful = $success1 && $success2;
+        }  else {
+            $successful = $success1;
         }
         
         if ($successful > 0) { // If the query is successful...
