@@ -52,12 +52,22 @@ class PostController extends Controller
             $tags = array_filter($tags, 'strlen');
             $submitted = date('Y-m-d H:i:s');
             
-            if(empty($title) || empty($content)) {
-                $message = 'Title and content cannot be empty!';
+            $tagLengthOK = 1;
+            foreach ($tags as $tag) {
+                if (strlen($tag) > 255) {
+                    $tagLengthOK = 0;
+                    break;
+                }
+            }
+            
+            if(empty($title) || empty($content) || empty($tags)) {
+                $message = 'Title and content and tags cannot be empty!';
             } elseif (strlen($content) > 65535) {
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
+            } elseif ($tagLengthOK == 0) {
+                $message = 'One of the tags is too long!';
             } elseif (!filter_var($link, FILTER_VALIDATE_URL) && !empty($link)) {
                 $message = "Please enter a valid link!";
             } else {
@@ -98,16 +108,27 @@ class PostController extends Controller
             $title = htmlentities($_POST['title']);
             $content = htmlentities(rtrim($_POST['content']));
             $link = trim($_POST['link']);
-            $tags = explode(",", htmlentities($_POST['tags']));
+            $tagString = htmlentities($_POST['tags']);
+            $tags = explode(",", $tagString);
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             
-            if(empty($title) || empty($content)) {
-                $message = 'Title and content cannot be empty!';
+            $tagLengthOK = 1;
+            foreach ($tags as $tag) {
+                if (strlen($tag) > 255) {
+                    $tagLengthOK = 0;
+                    break;
+                }
+            }
+            
+            if(empty($title) || empty($content) || empty($tags)) {
+                $message = 'Title and content and tags cannot be empty!';
             } elseif (strlen($content) > 65535) {
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
+            } elseif ($tagLengthOK == 0) {
+                $message = 'One of the tags is too long!';
             } elseif (!filter_var($link, FILTER_VALIDATE_URL) && !empty($link)) {
                 $message = "Please enter a valid link!";
             } else {
