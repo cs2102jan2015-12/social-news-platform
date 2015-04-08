@@ -16,8 +16,10 @@ class FeedController extends Controller
     public function index($tag_name=NULL)
     {
         if (isset($tag_name)) {
+            $tag = $tag_name;
             $posts = $this->posts->getPosts($tag_name); 
         } else {
+            $tag = 'All';
             $posts = $this->posts->getAllPosts();
         }
 
