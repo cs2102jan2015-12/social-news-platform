@@ -95,12 +95,22 @@ class PostController extends Controller
             $tags = array_map('trim', $tags);
             $tags = array_filter($tags, 'strlen');
             
+            $tagLengthOK = 1;
+            foreach ($tags as $tag) {
+                if (strlen($tag) > 255) {
+                    $tagLengthOK = 0;
+                    break;
+                }
+            }
+            
             if(empty($title) || empty($content) || empty($tags)) {
                 $message = 'Title and content and tags cannot be empty!';
             } elseif (strlen($content) > 65535) {
                 $message = 'The content is too long!';
             } elseif (strlen($title) > 255) {
                 $message = 'The title is too long!';
+            } elseif ($tagLengthOK == 0) {
+                $message = 'One of the tags is too long!';
             } elseif (!filter_var($link, FILTER_VALIDATE_URL)) {
                 $message = "Please enter a valid link!";
             } else {
